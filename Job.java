@@ -1,15 +1,18 @@
+import Sorting.Sortable;
+
 /**
  * Class representing a Job for the Single machine scheduling problem
  *
  */
-public class Job {
+public class Job implements Sortable {
+
     private double dueDate;
-    private double length;
+    private double lengthPeriod;
     private double releaseDate;
 
     public Job(double dueDate, double length, double releaseDate) {
         this.dueDate = dueDate;
-        this.length = length;
+        this.lengthPeriod = length;
         this.releaseDate = releaseDate;
     }
 
@@ -17,8 +20,8 @@ public class Job {
         return dueDate;
     }
 
-    public double getLength() {
-        return length;
+    public double getLengthPeriod() {
+        return lengthPeriod;
     }
 
     public double getReleaseDate() {
@@ -32,8 +35,9 @@ public class Job {
      * @param startDate
      * @return how late the Job is
      */
-    private double calculateLateness(double startDate){
-        return startDate + length - dueDate;
+    protected double calculateLateness(double startDate){
+        if(checkReleaseDate(startDate)) return startDate + lengthPeriod - dueDate;
+        else return releaseDate + lengthPeriod - dueDate;
     }
 
     /**
@@ -43,7 +47,12 @@ public class Job {
      * @param startDate
      * @return true if Job can be started
      */
-    private boolean checkReleaseDate(double startDate){
-        return !(startDate < releaseDate);
+    protected boolean checkReleaseDate(double startDate){
+        return (startDate > releaseDate);
+    }
+
+    @Override
+    public double sortValue() {
+        return lengthPeriod;
     }
 }
