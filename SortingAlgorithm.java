@@ -3,7 +3,7 @@ package Sorting;
 public class SortingAlgorithm {
 
     /**
-     * Implements selection sort algorithm
+     * Implements selection sort algorithm -> Explanation for documentation/presentation why do we use a selection sort
      * @param arr  Array that has to get sorted
      * @param ascending  sorting order ascending / descending
      */

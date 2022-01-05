@@ -1,6 +1,11 @@
 public class Main {
 
     public static void main(String[] args) {
-        System.out.print("test");
+
+
+        for(int i=0; i<3; i++){
+            Multithreading T = new Multithreading(i);
+            T.start();
+        }
     }
 }
