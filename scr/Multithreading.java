@@ -1,7 +1,7 @@
 public class Multithreading extends Thread{
 
     /**
-     * This class overrides the run method of the Class Thread to create multiple threads fo parallel processing
+     * This class overrides the run method of the Class Thread to create multiple threads for parallel processing
      */
 
     private final int threadNumber;
