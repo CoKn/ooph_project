@@ -1,3 +1,5 @@
+package scr;
+
 public class SortingAlgorithm {
 
     /**

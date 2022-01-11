@@ -1,18 +1,23 @@
-// import SortingAlgorithm;
+package scr;
 
 /**
  *
  */
 public class Schedule {
 
-    Job[] unscheduledSequence;
     Job[] scheduledSequence;
     double objFunctionValue;
+    Job[] allJobs;
+    Job[] schedule;
+    int length;
 
-    public Schedule(Job[] unscheduledSequence, Job[] scheduledSequence, double objFunctionValue) {
-        this.unscheduledSequence = unscheduledSequence;
+
+    public Schedule(Job[] scheduledSequence, Job[] allJobs) {
         this.scheduledSequence = scheduledSequence;
-        this.objFunctionValue = objFunctionValue;
+        this.allJobs = allJobs;
+        this.schedule = createSchedule(scheduledSequence);
+        this.objFunctionValue = calculateObjFuncValue();
+        this.length = schedule.length;
     }
 
     /**
@@ -24,15 +29,20 @@ public class Schedule {
      */
     public Job[] createSchedule(Job[] scheduledSequence) {
         Job[] schedule = new Job[4];
-        SortingAlgorithm.selectionSort(unscheduledSequence, true);
-        for (int i = 0; i < schedule.length; i++) {
-            if (scheduledSequence[i] != null) {
-                schedule[i] = scheduledSequence[i];
-            } else {
-                if(checkValue(unscheduledSequence[i])){
-                    schedule[i] = unscheduledSequence[i];
-                }
-            }
+        Job[] unscheduled = createUnscheduledSequence(scheduledSequence);
+        SortingAlgorithm.selectionSort(unscheduled, true);
+
+        // add the already scheduled Jobs to the schedule
+        int j = 0;
+        for(int i = 0; i < scheduledSequence.length; i++){
+            schedule[i] = scheduledSequence[i];
+            j ++;
+        }
+        // add the missing unscheduled Jobs
+        int k = 0;
+        for(int i = j; i <schedule.length; i++){
+            schedule[i] = unscheduled[k];
+            k++;
         }
         return schedule;
     }
@@ -51,10 +61,9 @@ public class Schedule {
 
     /**
      * Calculates the maxLateness of all jobs within a schedule
-     * @param schedule  the schedule where the maxLateness has to be calculated
      * @return  the maxLateness within the schedule
      */
-    public double calculateObjFuncValue(Job [] schedule){
+    public double calculateObjFuncValue(){
         double maxLateness = 0;
         double startingPoint = 0;
         for(Job job : schedule){
@@ -74,6 +83,37 @@ public class Schedule {
         }
         return maxLateness;
     }
+
+
+
+
+    public Job[] createUnscheduledSequence(Job[] scheduledSequence){
+        Job[] unscheduled = new Job[4-scheduledSequence.length];
+        int k = 0;
+        for(int i =0; i < allJobs.length; i++){
+            if (checkSequence(allJobs[i], scheduledSequence)) {
+                unscheduled[k] = allJobs[i];
+                k++;
+            }
+        }
+        return unscheduled;
+    }
+
+    /**
+     * checks which Jobs are already scheduled
+     * @param job
+     * @param scheduledSequence
+     * @return
+     */
+    public boolean checkSequence(Job job, Job[] scheduledSequence) {
+        for (int i = 0; i < scheduledSequence.length; i++) {
+            if (job.getName() == scheduledSequence[i].getName()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
 
 

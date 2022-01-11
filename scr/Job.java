@@ -1,4 +1,4 @@
-// import Sorting.Sortable;
+package scr;// import Sorting.Sortable;
 
 /**
  * Class representing a Job for the Single machine scheduling problem
@@ -9,8 +9,14 @@ public class Job implements Sortable {
     private double dueDate;
     private double lengthPeriod;
     private double releaseDate;
+    private String name;
 
-    public Job(double dueDate, double length, double releaseDate) {
+    public String getName() {
+        return name;
+    }
+
+    public Job(String name, double dueDate, double length, double releaseDate) {
+        this.name = name;
         this.dueDate = dueDate;
         this.lengthPeriod = length;
         this.releaseDate = releaseDate;
