@@ -1,4 +1,4 @@
-package scr;
+// package scr;
 
 public class Main {
 

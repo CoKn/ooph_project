@@ -1,4 +1,4 @@
-package scr;
+// package scr;
 
 /**
  *
@@ -90,9 +90,9 @@ public class Schedule {
     public Job[] createUnscheduledSequence(Job[] scheduledSequence){
         Job[] unscheduled = new Job[4-scheduledSequence.length];
         int k = 0;
-        for(int i =0; i < allJobs.length; i++){
-            if (checkSequence(allJobs[i], scheduledSequence)) {
-                unscheduled[k] = allJobs[i];
+        for (Job allJob : allJobs) {
+            if (checkSequence(allJob, scheduledSequence)) {
+                unscheduled[k] = allJob;
                 k++;
             }
         }
@@ -105,9 +105,10 @@ public class Schedule {
      * @param scheduledSequence
      * @return
      */
+
     public boolean checkSequence(Job job, Job[] scheduledSequence) {
-        for (int i = 0; i < scheduledSequence.length; i++) {
-            if (job.getName() == scheduledSequence[i].getName()) {
+        for (Job value : scheduledSequence) {
+            if (job.getName().equals(value.getName())) {
                 return false;
             }
         }

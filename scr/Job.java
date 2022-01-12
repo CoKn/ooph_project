@@ -1,4 +1,5 @@
-package scr;// import Sorting.Sortable;
+// package scr;
+// import Sorting.Sortable;
 
 /**
  * Class representing a Job for the Single machine scheduling problem

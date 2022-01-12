@@ -1,4 +1,4 @@
-package scr;
+// package scr;
 
 public class Subproblem {
 
@@ -63,8 +63,8 @@ public class Subproblem {
     }
 
     public boolean checkSequence(Job job, Job[] scheduledSequence) {
-        for (int i = 0; i < scheduledSequence.length; i++) {
-            if (job.getName() == scheduledSequence[i].getName()) {
+        for (Job value : scheduledSequence) {
+            if (job.getName().equals(value.getName())) {
                 return false;
             }
         }
