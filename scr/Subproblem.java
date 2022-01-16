@@ -25,7 +25,7 @@ public class Subproblem {
     }
 
     //to branch, the algorithm checks where to branch next
-    //checks how many daughterProblems, according to level of motherproblem, array of subproblems is created
+    //checks how many daughterProblems, according to level of mother problem, array of sub problems is created
     public void branch(){
         //creates an empty array of length (4-1) - level
         daughterProblems = new Subproblem[(schedule.length - 1)  - level];
@@ -91,6 +91,11 @@ public class Subproblem {
             return motherProblem.nextToBranch();
         }
     }
+
+
+
+
+
 
 
 /*

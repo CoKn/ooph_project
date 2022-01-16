@@ -16,7 +16,7 @@ public class Schedule {
         this.scheduledSequence = scheduledSequence;
         this.allJobs = allJobs;
         this.schedule = createSchedule(scheduledSequence);
-        this.objFunctionValue = calculateObjFuncValue();
+        this.objFunctionValue = calculateObjFuncValue();  // calculates lower bound for schedule
         this.length = schedule.length;
     }
 
@@ -53,9 +53,9 @@ public class Schedule {
      * @return  true if the value is not in the scheduled part
      */
     public boolean checkValue(Job job) {
-           for (int j = 0; j < scheduledSequence.length; j++) {
-                if (job == scheduledSequence[j]) return false;
-            }
+        for (Job value : scheduledSequence) {
+            if (job == value) return false;
+        }
         return true;
     }
 
@@ -65,7 +65,7 @@ public class Schedule {
      */
     public double calculateObjFuncValue(){
         double maxLateness = 0;
-        double startingPoint = 0;
+        double startingPoint = schedule[0].getReleaseDate();  // start with the schedule's first Job release date
         for(Job job : schedule){
             // check if the job's lateness if higher than the maxLateness
             if(job.calculateLateness(startingPoint)>maxLateness){
@@ -75,7 +75,9 @@ public class Schedule {
 
             // if the startingPoint is after the releaseDate, startingPoint is updated by adding the
                 // period length of job
-            if(job.checkReleaseDate(startingPoint))startingPoint += job.getLengthPeriod();
+            else if(job.checkReleaseDate(startingPoint)) {
+                startingPoint += job.getLengthPeriod();
+            }
             //otherwise, the difference between releaseDate and startingPoint plus the job's
                 // length in periods is added
             else startingPoint += (job.getReleaseDate()-startingPoint) + job.getLengthPeriod();
@@ -115,7 +117,56 @@ public class Schedule {
         return true;
     }
 
+    /**
+     * calculate the completion Dates for a given job sequence
+    */
+    public static double [] calculateCompletionDate(Job[] jobs) {
+        double [] completionDate = new double[jobs.length];
+        for (int i = 0; i < jobs.length; i++) {
+            if(i==0){
+                completionDate[i] = jobs[i].getReleaseDate() + jobs[i].getLengthPeriod();
+            } else {
+                if(completionDate[i-1] >= jobs[i].getReleaseDate()){
+                    completionDate[i] = completionDate[i-1] + jobs[i].getLengthPeriod();
+                } else {
+                    completionDate[i] = jobs[i].getReleaseDate() + jobs[i].getLengthPeriod();
+                }
+            }
+        }
+        return completionDate;
+    }
+
+    /**
+     * Get max due date of a given set of jobs
+     */
+    public double getMaxDueDate(){
+        double maxDueDate = this.allJobs[0].getDueDate();
+        for(int i=1; i<this.allJobs.length; i++){
+            if(this.allJobs[i].getDueDate() > maxDueDate){
+                maxDueDate = this.allJobs[i].getDueDate();
+            }
+        }
+        return maxDueDate;
+    }
+
+
+    /**
+     * Get min release date of a given set of jobs
+     */
+    public double getMinReleaseDate(){
+        double minReleaseDate = this.allJobs[0].getReleaseDate();
+        for(int i=1; i<this.allJobs.length; i++){
+            if(this.allJobs[i].getReleaseDate() < minReleaseDate){
+                minReleaseDate = this.allJobs[i].getReleaseDate();
+            }
+        }
+        return minReleaseDate;
+    }
+
 }
+
+
+
 
 
 

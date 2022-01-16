@@ -7,14 +7,11 @@
  */
 public class Job implements Sortable {
 
-    private double dueDate;
-    private double lengthPeriod;
-    private double releaseDate;
-    private String name;
+    private final double dueDate;
+    private final double lengthPeriod;
+    private final double releaseDate;
+    private final String name;
 
-    public String getName() {
-        return name;
-    }
 
     public Job(String name, double dueDate, double length, double releaseDate) {
         this.name = name;
@@ -33,6 +30,10 @@ public class Job implements Sortable {
 
     public double getReleaseDate() {
         return releaseDate;
+    }
+
+    public String getName() {
+        return name;
     }
 
     /**
