@@ -1,18 +1,15 @@
-// package scr;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-/**
- *
- */
 public class Schedule {
-
-    Job[] scheduledSequence;
+    ArrayList<Job> scheduledSequence;
     double objFunctionValue;
     Job[] allJobs;
     Job[] schedule;
     int length;
 
 
-    public Schedule(Job[] scheduledSequence, Job[] allJobs) {
+    public Schedule(ArrayList<Job> scheduledSequence, Job[] allJobs) {
         this.scheduledSequence = scheduledSequence;
         this.allJobs = allJobs;
         this.schedule = createSchedule(scheduledSequence);
@@ -27,15 +24,15 @@ public class Schedule {
      * @param  scheduledSequence takes the sequence of jobs that is given by the B&B algorithm
      * @return  the complete schedule including not scheduled jobs
      */
-    public Job[] createSchedule(Job[] scheduledSequence) {
-        Job[] schedule = new Job[4];
+    public Job[] createSchedule(ArrayList<Job> scheduledSequence) {
+        Job[] schedule = new Job[allJobs.length];
         Job[] unscheduled = createUnscheduledSequence(scheduledSequence);
         SortingAlgorithm.selectionSort(unscheduled, true);
 
         // add the already scheduled Jobs to the schedule
         int j = 0;
-        for(int i = 0; i < scheduledSequence.length; i++){
-            schedule[i] = scheduledSequence[i];
+        for(int i = 0; i < scheduledSequence.size(); i++){
+            schedule[i] = scheduledSequence.get(i);
             j ++;
         }
         // add the missing unscheduled Jobs
@@ -74,12 +71,12 @@ public class Schedule {
             // updates the startingPoint for the next job in the schedule
 
             // if the startingPoint is after the releaseDate, startingPoint is updated by adding the
-                // period length of job
+            // period length of job
             else if(job.checkReleaseDate(startingPoint)) {
                 startingPoint += job.getLengthPeriod();
             }
             //otherwise, the difference between releaseDate and startingPoint plus the job's
-                // length in periods is added
+            // length in periods is added
             else startingPoint += (job.getReleaseDate()-startingPoint) + job.getLengthPeriod();
 
         }
@@ -89,12 +86,12 @@ public class Schedule {
 
 
 
-    public Job[] createUnscheduledSequence(Job[] scheduledSequence){
-        Job[] unscheduled = new Job[4-scheduledSequence.length];
+    public Job[] createUnscheduledSequence(ArrayList<Job> scheduledSequence){
+        Job[] unscheduled = new Job[allJobs.length-scheduledSequence.size()];
         int k = 0;
-        for (Job allJob : allJobs) {
-            if (checkSequence(allJob, scheduledSequence)) {
-                unscheduled[k] = allJob;
+        for (Job job : allJobs) {
+            if (checkSequence(job, scheduledSequence)) {
+                unscheduled[k] = job;
                 k++;
             }
         }
@@ -108,7 +105,7 @@ public class Schedule {
      * @return
      */
 
-    public boolean checkSequence(Job job, Job[] scheduledSequence) {
+    public boolean checkSequence(Job job, ArrayList<Job> scheduledSequence) {
         for (Job value : scheduledSequence) {
             if (job.getName().equals(value.getName())) {
                 return false;
@@ -117,56 +114,11 @@ public class Schedule {
         return true;
     }
 
-    /**
-     * calculate the completion Dates for a given job sequence
-    */
-    public static double [] calculateCompletionDate(Job[] jobs) {
-        double [] completionDate = new double[jobs.length];
-        for (int i = 0; i < jobs.length; i++) {
-            if(i==0){
-                completionDate[i] = jobs[i].getReleaseDate() + jobs[i].getLengthPeriod();
-            } else {
-                if(completionDate[i-1] >= jobs[i].getReleaseDate()){
-                    completionDate[i] = completionDate[i-1] + jobs[i].getLengthPeriod();
-                } else {
-                    completionDate[i] = jobs[i].getReleaseDate() + jobs[i].getLengthPeriod();
-                }
-            }
+    public String displayJobs(){
+        String[] schedule = new String[this.schedule.length];
+        for(int i=0; i< schedule.length; i++){
+            schedule[i] = this.schedule[i].getName();
         }
-        return completionDate;
+        return Arrays.toString(schedule) + " " + this.objFunctionValue;
     }
-
-    /**
-     * Get max due date of a given set of jobs
-     */
-    public double getMaxDueDate(){
-        double maxDueDate = this.allJobs[0].getDueDate();
-        for(int i=1; i<this.allJobs.length; i++){
-            if(this.allJobs[i].getDueDate() > maxDueDate){
-                maxDueDate = this.allJobs[i].getDueDate();
-            }
-        }
-        return maxDueDate;
-    }
-
-
-    /**
-     * Get min release date of a given set of jobs
-     */
-    public double getMinReleaseDate(){
-        double minReleaseDate = this.allJobs[0].getReleaseDate();
-        for(int i=1; i<this.allJobs.length; i++){
-            if(this.allJobs[i].getReleaseDate() < minReleaseDate){
-                minReleaseDate = this.allJobs[i].getReleaseDate();
-            }
-        }
-        return minReleaseDate;
-    }
-
 }
-
-
-
-
-
-

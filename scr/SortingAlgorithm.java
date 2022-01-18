@@ -27,6 +27,8 @@ public class SortingAlgorithm {
             swap(arr, minMax, i);
         }
     }
+
+
     private static void swap(Sortable[] arr, int n, int m){
         Sortable swap = arr[n];
         arr[n] = arr[m];

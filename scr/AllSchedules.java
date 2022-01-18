@@ -1,5 +1,5 @@
 import java.util.Arrays;
-
+/*
 public class AllSchedules {
     Schedule[] allSchedules;
     Job[] jobs;
@@ -11,11 +11,14 @@ public class AllSchedules {
     }
 
 
+
     /**
      * Takes an array of Jobs and creates all possible first level schedules
      * @param jobs
      * @return
      */
+
+    /*
     public Schedule[] scheduler(Job[] jobs){
         Schedule[] schedules = new Schedule[jobs.length];
         for(int i=0; i<jobs.length; i++) {
@@ -59,6 +62,8 @@ public class AllSchedules {
     /**
      * Prints the different first level schedules and their maximum lateness
      */
+
+    /*
     public static void printBranchSchedules(Schedule[] schedules){
         for(Schedule schedule: schedules){
             String[] jobArray = new String[schedule.length];
@@ -80,4 +85,7 @@ public class AllSchedules {
             System.out.println(" Maximum Lateness: " + schedule.objFunctionValue);
         }
     }
+
+
 }
+        */

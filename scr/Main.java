@@ -16,7 +16,7 @@ public class Main {
         // scheduled[0] = new Job("A",10, 1, 8);
         // scheduled[1] = new Job("B", 7, 3, 0);
 
-
+        /*
         Job[] allJobs = new Job[4];
         allJobs[0] = new Job("A",10, 1, 8);
         allJobs[1] = new Job("B", 7, 3, 0);
@@ -34,7 +34,7 @@ public class Main {
 
 
 
-        /*
+
         Schedule testSchedule = new Schedule(scheduled, allJobs);
 
 
@@ -58,6 +58,16 @@ public class Main {
         System.out.println(scheduletest.getMaxDueDate());
         System.out.println(scheduletest.getMinReleaseDate());
         */
+
+        Job A = new Job("A",10, 1, 8);
+        Job B = new Job("B", 7, 3, 0);
+        Job C = new Job("C", 11,5, 6);
+        Job D = new Job("D", 4, 1, 3);
+
+        Job[] allJobs = new Job[]{A, B, C, D};
+
+        GT tree = Branch.createTree(allJobs);
+        Branch.branch(tree);
 
     }
 
