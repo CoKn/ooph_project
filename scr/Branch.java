@@ -49,18 +49,29 @@ public class Branch {
             }
 
             tree.display();
+
+            GenericTree.Node nextNode = findMinLateness(node);
+            System.out.println("\n" + nextNode.getData().displayJobs());
         }
 
     }
 
 
     /**
-     * Find the Schedule with the lowest Lateness on a horizontal level
-     * @param schedule
+     * Find the Schedule with the min Lateness on a horizontal level
+     * @param node
      * @return
      */
-    private Schedule findMaxLateness(Schedule schedule){
-        return schedule;
+    private static GenericTree.Node findMinLateness(GenericTree.Node node){
+        double minLateness = node.getData().objFunctionValue;
+        GenericTree.Node nextNode = node;
+        for(GenericTree.Node childNode: node.children){
+            if(childNode.getData().objFunctionValue < minLateness){
+                minLateness = childNode.getData().objFunctionValue;
+                nextNode = childNode;
+            }
+        }
+        return nextNode;
     }
 
     /**
