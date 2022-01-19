@@ -1,4 +1,6 @@
+import javax.swing.*;
 import java.util.ArrayList;
+
 
 public class Branch {
 
@@ -8,23 +10,25 @@ public class Branch {
         return new GT(schedule);
     }
 
+    //TODO: Fix function -> create deep copies
     public static void branch(GT tree){
         GT.Node node = tree.getRoot();
         double optimum = node.getData().objFunctionValue;
 
         if (node.getData().objFunctionValue == optimum) {
 
-            ArrayList<Job> scheduledSequenceReference = node.getData().scheduledSequence;
+            ArrayList<Job> scheduledSequenceReference = deepCopyListArray(node.getData().scheduledSequence);
 
-            for(int i=0; i<node.getData().allJobs.length; i++){ //node.getData().scheduledSequence.size()
+            for(int i=node.getData().scheduledSequence.size(); i<node.getData().allJobs.length; i++){
 
-                ArrayList<Job> scheduledSequence = node.getData().scheduledSequence;
+                ArrayList<Job> scheduledSequence = deepCopyListArray(node.getData().scheduledSequence);
 
                 for(Job job: node.getData().allJobs) {
 
                     if(!scheduledSequenceReference.contains(job)){
                         scheduledSequence.add(job);
-                        // scheduledSequenceReference.add(job);
+                        scheduledSequenceReference.add(job);
+                        System.out.println(scheduledSequenceReference.size());
                         break;
                     }
 
@@ -40,5 +44,13 @@ public class Branch {
             tree.display();
         }
 
+    }
+
+    private static ArrayList<Job> deepCopyListArray(ArrayList<Job> jobs){
+        ArrayList<Job> sequence = new ArrayList<>();
+        for(Job job : jobs) {
+            sequence.add(job.clone());
+        }
+        return sequence;
     }
 }

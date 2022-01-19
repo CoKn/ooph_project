@@ -2,7 +2,7 @@
  * Class representing a Job for the Single machine scheduling problem
  *
  */
-public class Job implements Sortable {
+public class Job implements Sortable, Cloneable {
 
     private final double dueDate;
     private final double lengthPeriod;
@@ -59,5 +59,16 @@ public class Job implements Sortable {
     @Override
     public double sortValue() {
         return lengthPeriod;
+    }
+
+    @Override
+    public Job clone() {
+        try {
+            Job clone = (Job) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
