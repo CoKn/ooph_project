@@ -50,7 +50,8 @@ public class Branch {
 
             }
 
-            Schedule schedule = new Schedule(scheduledSequence, parentNode.getData().allJobs);
+            System.out.println(deepCopyListArray(scheduledSequence).size());
+            Schedule schedule = new Schedule(deepCopyListArray(scheduledSequence), parentNode.getData().allJobs);
 
             tree.addNode(schedule, parentNode);
 
@@ -60,6 +61,8 @@ public class Branch {
         queueNodes.remove(parentNode);
 
         optimalSchedule = findMinLateness(parentNode, queueNodes, optimalSchedule);
+        System.out.println(optimalSchedule.getData().scheduledSequence.size());
+
         return optimalSchedule;
 
     }

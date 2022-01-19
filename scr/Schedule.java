@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Schedule {
     ArrayList<Job> scheduledSequence;
@@ -88,6 +89,7 @@ public class Schedule {
 
     public Job[] createUnscheduledSequence(ArrayList<Job> scheduledSequence){
         Job[] unscheduled = new Job[allJobs.length-scheduledSequence.size()];
+
         int k = 0;
         for (Job job : allJobs) {
             if (checkSequence(job, scheduledSequence)) {
@@ -107,7 +109,7 @@ public class Schedule {
 
     public boolean checkSequence(Job job, ArrayList<Job> scheduledSequence) {
         for (Job value : scheduledSequence) {
-            if (job.getName().equals(value.getName())) {
+            if (Objects.equals(job.getName(), value.getName())) {
                 return false;
             }
         }

@@ -15,8 +15,9 @@ public class Main {
 
         GenericTree tree = Branch.createTree(allJobs);
 
-        // Branch.loopBranch(tree);
+        Branch.loopBranch(tree);
 
+        /*
         ArrayList<GenericTree.Node> queueNodes = new ArrayList<>();
         queueNodes.add(tree.getRoot());
         GenericTree.Node optimalScheduleNode = queueNodes.get(0);
@@ -26,6 +27,8 @@ public class Main {
 
         optimalScheduleNode = Branch.branch(tree, optimalScheduleNode, queueNodes, optimalScheduleNode);
         System.out.println(optimalScheduleNode.getData().displayJobs());
+
+         */
 
         tree.display();
 
