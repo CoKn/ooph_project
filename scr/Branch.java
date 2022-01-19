@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 
 public class Branch {
@@ -24,6 +26,7 @@ public class Branch {
             optimalScheduleNode = branch(tree, queueNodes.get(queueNodes.size()-1), queueNodes, optimalScheduleNode);
         }
 
+        System.out.println("The optimal schedule is: " + optimalScheduleNode.getData().displayJobs());
     }
 
     //TODO: Check scheduleSequence
@@ -42,6 +45,16 @@ public class Branch {
 
             for(Job job: parentNode.getData().allJobs) {
 
+                if(!checkForEqual(scheduledSequenceReference, job)){
+                    scheduledSequence.add(job);
+                    scheduledSequenceReference.add(job);
+                    break;
+                }
+
+            }
+
+            /*
+            for(Job job: parentNode.getData().allJobs) {
                 if(!scheduledSequenceReference.contains(job)){
                     scheduledSequence.add(job);
                     scheduledSequenceReference.add(job);
@@ -50,7 +63,8 @@ public class Branch {
 
             }
 
-            System.out.println(deepCopyListArray(scheduledSequence).size());
+             */
+            // System.out.println(Schedule.displayJobSequence(deepCopyListArray(scheduledSequence)));
             Schedule schedule = new Schedule(deepCopyListArray(scheduledSequence), parentNode.getData().allJobs);
 
             tree.addNode(schedule, parentNode);
@@ -61,11 +75,22 @@ public class Branch {
         queueNodes.remove(parentNode);
 
         optimalSchedule = findMinLateness(parentNode, queueNodes, optimalSchedule);
-        System.out.println(optimalSchedule.getData().scheduledSequence.size());
+        // System.out.println(optimalSchedule.getData().scheduledSequence.size());
 
         return optimalSchedule;
 
     }
+
+    public static Boolean checkForEqual(ArrayList<Job> scheduledSequenceReference, Job job){
+        for (Job value : scheduledSequenceReference) {
+            if (value.getName().equals(job.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     //TODO: Change optimalScheduleNode to list
     /**
@@ -92,9 +117,9 @@ public class Branch {
 
         }
         queueNodes.addAll(localOptimums);
-        optimalScheduleNode = localOptimums.get(0);
-
-        return optimalScheduleNode;
+        if (localOptimums.size()>0){
+            return localOptimums.get(0);
+        } else return optimalScheduleNode;
     }
 
     /**

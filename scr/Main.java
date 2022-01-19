@@ -17,23 +17,8 @@ public class Main {
 
         Branch.loopBranch(tree);
 
-        /*
-        ArrayList<GenericTree.Node> queueNodes = new ArrayList<>();
-        queueNodes.add(tree.getRoot());
-        GenericTree.Node optimalScheduleNode = queueNodes.get(0);
-
-        optimalScheduleNode = Branch.branch(tree, tree.getRoot(), queueNodes, optimalScheduleNode);
-        System.out.println(optimalScheduleNode.getData().displayJobs());
-
-        optimalScheduleNode = Branch.branch(tree, optimalScheduleNode, queueNodes, optimalScheduleNode);
-        System.out.println(optimalScheduleNode.getData().displayJobs());
-
-         */
-
+        //TODO: Check tree display function
         tree.display();
-
-        //TODO: Error tree branch always the same node (problem maybe in the function that fixes the jobs in a schedule)
-
     }
 
 

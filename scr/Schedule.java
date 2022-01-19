@@ -85,11 +85,9 @@ public class Schedule {
     }
 
 
-
-
+    //TODO: Something is wrong here -> Index out of bounds
     public Job[] createUnscheduledSequence(ArrayList<Job> scheduledSequence){
         Job[] unscheduled = new Job[allJobs.length-scheduledSequence.size()];
-
         int k = 0;
         for (Job job : allJobs) {
             if (checkSequence(job, scheduledSequence)) {
@@ -108,8 +106,8 @@ public class Schedule {
      */
 
     public boolean checkSequence(Job job, ArrayList<Job> scheduledSequence) {
-        for (Job value : scheduledSequence) {
-            if (Objects.equals(job.getName(), value.getName())) {
+        for (Job scheduledJob : scheduledSequence) {
+            if (Objects.equals(job.getName(), scheduledJob.getName())) {
                 return false;
             }
         }
@@ -122,5 +120,13 @@ public class Schedule {
             schedule[i] = this.schedule[i].getName();
         }
         return Arrays.toString(schedule) + " " + this.objFunctionValue;
+    }
+
+    public static String displayJobSequence(ArrayList<Job> sequence){
+        String[] schedule = new String[sequence.size()];
+        for(int i=0; i< sequence.size(); i++){
+            schedule[i] = sequence.get(i).getName();
+        }
+        return Arrays.toString(schedule);
     }
 }
