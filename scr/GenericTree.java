@@ -51,6 +51,7 @@ public class GenericTree {
     }
 
 
+    //TODO: Check if this function is really correct
     /**
      * displays all schedule data of a tree
      */
