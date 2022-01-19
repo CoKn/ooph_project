@@ -21,6 +21,7 @@ public class Branch {
      */
     public static void branch(GenericTree tree){
         GenericTree.Node node = tree.getRoot();
+        ArrayList<GenericTree.Node> queueNodes = new ArrayList<>();
         double optimum = node.getData().objFunctionValue;
 
         if (node.getData().objFunctionValue == optimum) {
@@ -49,29 +50,31 @@ public class Branch {
             }
 
             tree.display();
+            findMinLateness(node, queueNodes);
 
-            GenericTree.Node nextNode = findMinLateness(node);
-            System.out.println("\n" + nextNode.getData().displayJobs());
+            printNode(queueNodes);
         }
 
     }
-
 
     /**
      * Find the Schedule with the min Lateness on a horizontal level
      * @param node
      * @return
      */
-    private static GenericTree.Node findMinLateness(GenericTree.Node node){
+    private static void findMinLateness(GenericTree.Node node, ArrayList<GenericTree.Node> queue){
         double minLateness = node.getData().objFunctionValue;
-        GenericTree.Node nextNode = node;
+        queue.add(node);
         for(GenericTree.Node childNode: node.children){
             if(childNode.getData().objFunctionValue < minLateness){
+                queue.clear();
                 minLateness = childNode.getData().objFunctionValue;
-                nextNode = childNode;
+                queue.add(childNode);
+            } else if(childNode.getData().objFunctionValue == minLateness) {
+                minLateness = childNode.getData().objFunctionValue;
+                queue.add(childNode);
             }
         }
-        return nextNode;
     }
 
     /**
@@ -85,5 +88,11 @@ public class Branch {
             sequence.add(job.clone());
         }
         return sequence;
+    }
+
+    private static void printNode(ArrayList<GenericTree.Node> nodes){
+        for(GenericTree.Node queueNode: nodes){
+            System.out.println("\n" + queueNode.getData().displayJobs());
+        }
     }
 }
