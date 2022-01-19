@@ -1,18 +1,26 @@
-import javax.swing.*;
 import java.util.ArrayList;
 
 
 public class Branch {
 
-    static GT createTree(Job[] allJobs){
+    /**
+     * Create a Tree based on a set of jobs
+     * @param allJobs
+     * @return
+     */
+    static GenericTree createTree(Job[] allJobs){
         ArrayList<Job> scheduledSequence = new ArrayList<>();
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
-        return new GT(schedule);
+        return new GenericTree(schedule);
     }
 
-    //TODO: Fix function -> create deep copies
-    public static void branch(GT tree){
-        GT.Node node = tree.getRoot();
+
+    /**
+     * Branch a Node
+     * @param tree
+     */
+    public static void branch(GenericTree tree){
+        GenericTree.Node node = tree.getRoot();
         double optimum = node.getData().objFunctionValue;
 
         if (node.getData().objFunctionValue == optimum) {
@@ -28,7 +36,6 @@ public class Branch {
                     if(!scheduledSequenceReference.contains(job)){
                         scheduledSequence.add(job);
                         scheduledSequenceReference.add(job);
-                        System.out.println(scheduledSequenceReference.size());
                         break;
                     }
 
@@ -46,6 +53,21 @@ public class Branch {
 
     }
 
+
+    /**
+     * Find the Schedule with the lowest Lateness on a horizontal level
+     * @param schedule
+     * @return
+     */
+    private Schedule findMaxLateness(Schedule schedule){
+        return schedule;
+    }
+
+    /**
+     * Creates a deep copy of a ArrayList<Job>
+     * @param jobs
+     * @return
+     */
     private static ArrayList<Job> deepCopyListArray(ArrayList<Job> jobs){
         ArrayList<Job> sequence = new ArrayList<>();
         for(Job job : jobs) {

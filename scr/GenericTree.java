@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class GT {
+public class GenericTree {
 
     static class Node{
         private final Schedule data;
@@ -17,7 +17,7 @@ public class GT {
     }
     private final Node root;
 
-    GT(Schedule schedule){
+    GenericTree(Schedule schedule){
         this.root = new Node(schedule);
     }
 
@@ -58,14 +58,14 @@ public class GT {
         display(this.getRoot());
     }
 
-    private void display(GT.Node node){
+    private void display(GenericTree.Node node){
         StringBuilder str = new StringBuilder(node.data.displayJobs() + "-> ");
 
-        for(GT.Node child: node.children){
+        for(GenericTree.Node child: node.children){
             str.append(child.data.displayJobs()).append(", ");
         }
         System.out.println(str);
-        for(GT.Node child: node.children){
+        for(GenericTree.Node child: node.children){
             display(child);
         }
     }

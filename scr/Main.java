@@ -1,7 +1,5 @@
 // package scr;
 
-import java.util.Arrays;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -13,7 +11,7 @@ public class Main {
 
         Job[] allJobs = new Job[]{A, B, C, D};
 
-        GT tree = Branch.createTree(allJobs);
+        GenericTree tree = Branch.createTree(allJobs);
         Branch.branch(tree);
 
     }
