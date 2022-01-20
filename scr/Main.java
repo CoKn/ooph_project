@@ -6,10 +6,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Job A = new Job("A",10, 1, 8);
-        Job B = new Job("B", 7, 3, 0);
-        Job C = new Job("C", 11,5, 6);
-        Job D = new Job("D", 4, 1, 3);
+        Job A = new Job("A",14, 6, 0);
+        Job B = new Job("B", 17, 3, 1);
+        Job C = new Job("C", 15,8, 5);
+        Job D = new Job("D", 13, 5, 8);
 
         Job[] allJobs = new Job[]{A, B, C, D};
 

@@ -85,7 +85,6 @@ public class Schedule {
     }
 
 
-    //TODO: Something is wrong here -> Index out of bounds
     public Job[] createUnscheduledSequence(ArrayList<Job> scheduledSequence){
         Job[] unscheduled = new Job[allJobs.length-scheduledSequence.size()];
         int k = 0;

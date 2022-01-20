@@ -52,18 +52,6 @@ public class Branch {
                 }
 
             }
-
-            /*
-            for(Job job: parentNode.getData().allJobs) {
-                if(!scheduledSequenceReference.contains(job)){
-                    scheduledSequence.add(job);
-                    scheduledSequenceReference.add(job);
-                    break;
-                }
-
-            }
-
-             */
             // System.out.println(Schedule.displayJobSequence(deepCopyListArray(scheduledSequence)));
             Schedule schedule = new Schedule(deepCopyListArray(scheduledSequence), parentNode.getData().allJobs);
 
