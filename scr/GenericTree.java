@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class GenericTree {
 
-    static class Node{
+    static class Node implements Cloneable{
         private final Schedule data;
         ArrayList<Node> children;
 
@@ -13,6 +13,17 @@ public class GenericTree {
 
         public Schedule getData() {
             return data;
+        }
+
+        @Override
+        public Node clone() {
+            try {
+                Node clone = (Node) super.clone();
+                // TODO: copy mutable state here, so the clone can't change the internals of the original
+                return clone;
+            } catch (CloneNotSupportedException e) {
+                throw new AssertionError();
+            }
         }
     }
     private final Node root;
@@ -51,7 +62,6 @@ public class GenericTree {
     }
 
 
-    //TODO: Check if this function is really correct
     /**
      * displays all schedule data of a tree
      */

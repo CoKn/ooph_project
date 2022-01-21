@@ -17,7 +17,6 @@ public class Main {
 
         Branch.loopBranch(tree);
 
-        //TODO: Check tree display function
         tree.display();
     }
 
