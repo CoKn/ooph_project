@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 
 public class Branch {
@@ -11,16 +9,16 @@ public class Branch {
      * @return
      */
     static GenericTree createTree(Job[] allJobs){
-        ArrayList<Job> scheduledSequence = new ArrayList<>();
+        LinkedList<Job> scheduledSequence = new LinkedList<>();
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
         return new GenericTree(schedule);
     }
 
 
     public static void loopBranch(GenericTree tree){
-        ArrayList<GenericTree.Node> queueNodes = new ArrayList<>();
+        LinkedList<GenericTree.Node> queueNodes = new LinkedList<>();
         queueNodes.add(tree.getRoot());
-        ArrayList<GenericTree.Node> optimalScheduleNodes = deepCopyListArrayNodes(queueNodes);
+        LinkedList<GenericTree.Node> optimalScheduleNodes = deepCopyListArrayNodes(queueNodes);
 
         while (queueNodes.size()>0){
             branch(tree, queueNodes.get(queueNodes.size()-1), queueNodes, optimalScheduleNodes);
@@ -39,14 +37,14 @@ public class Branch {
      */
     public static void branch(GenericTree tree,
                               GenericTree.Node parentNode,
-                              ArrayList<GenericTree.Node> queueNodes,
-                              ArrayList<GenericTree.Node> optimalScheduleNodes){
+                              LinkedList<GenericTree.Node> queueNodes,
+                              LinkedList<GenericTree.Node> optimalScheduleNodes){
 
-        ArrayList<Job> scheduledSequenceReference = deepCopyListArray(parentNode.getData().scheduledSequence);
+        LinkedList<Job> scheduledSequenceReference = deepCopyListArray(parentNode.getData().scheduledSequence);
 
         for(int i=parentNode.getData().scheduledSequence.size(); i<parentNode.getData().allJobs.length; i++){
 
-            ArrayList<Job> scheduledSequence = deepCopyListArray(parentNode.getData().scheduledSequence);
+            LinkedList<Job> scheduledSequence = deepCopyListArray(parentNode.getData().scheduledSequence);
 
             for(Job job: parentNode.getData().allJobs) {
 
@@ -72,7 +70,7 @@ public class Branch {
 
     }
 
-    public static Boolean checkForEqual(ArrayList<Job> scheduledSequenceReference, Job job){
+    public static Boolean checkForEqual(LinkedList<Job> scheduledSequenceReference, Job job){
         for (Job value : scheduledSequenceReference) {
             if (value.getName().equals(job.getName())) {
                 return true;
@@ -82,19 +80,17 @@ public class Branch {
     }
 
 
-
-    //TODO: Change optimalScheduleNode to list
     /**
      * Find the Schedule with the min Lateness on a horizontal level
      * @param parentNode
      * @return
      */
     private static void findMinLateness(GenericTree.Node parentNode,
-                                                               ArrayList<GenericTree.Node> queueNodes,
-                                                               ArrayList<GenericTree.Node> optimalScheduleNodes){
+                                        LinkedList<GenericTree.Node> queueNodes,
+                                        LinkedList<GenericTree.Node> optimalScheduleNodes){
 
         double minLateness = parentNode.getData().objFunctionValue;
-        ArrayList<GenericTree.Node> localOptimums = new ArrayList<>();
+        LinkedList<GenericTree.Node> localOptimums = new LinkedList<>();
 
         for(GenericTree.Node childNode: parentNode.children){
 
@@ -123,8 +119,8 @@ public class Branch {
      * @param jobs
      * @return
      */
-    private static ArrayList<Job> deepCopyListArray(ArrayList<Job> jobs){
-        ArrayList<Job> sequence = new ArrayList<>();
+    private static LinkedList<Job> deepCopyListArray(LinkedList<Job> jobs){
+        LinkedList<Job> sequence = new LinkedList<>();
         for(Job job : jobs) {
             sequence.add(job.clone());
         }
@@ -137,8 +133,8 @@ public class Branch {
         }
     }
 
-    private static ArrayList<GenericTree.Node> deepCopyListArrayNodes(ArrayList<GenericTree.Node> nodes){
-        ArrayList<GenericTree.Node> newNodes = new ArrayList<>();
+    private static LinkedList<GenericTree.Node> deepCopyListArrayNodes(LinkedList<GenericTree.Node> nodes){
+        LinkedList<GenericTree.Node> newNodes = new LinkedList<>();
         for(GenericTree.Node node: nodes) newNodes.add(node.clone());
         return newNodes;
     }

@@ -1,16 +1,17 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Objects;
 
 public class Schedule {
-    ArrayList<Job> scheduledSequence;
+    LinkedList<Job> scheduledSequence;
     double objFunctionValue;
     Job[] allJobs;
     Job[] schedule;
     int length;
 
 
-    public Schedule(ArrayList<Job> scheduledSequence, Job[] allJobs) {
+    public Schedule(LinkedList<Job> scheduledSequence, Job[] allJobs) {
         this.scheduledSequence = scheduledSequence;
         this.allJobs = allJobs;
         this.schedule = createSchedule(scheduledSequence);
@@ -25,7 +26,7 @@ public class Schedule {
      * @param  scheduledSequence takes the sequence of jobs that is given by the B&B algorithm
      * @return  the complete schedule including not scheduled jobs
      */
-    public Job[] createSchedule(ArrayList<Job> scheduledSequence) {
+    public Job[] createSchedule(LinkedList<Job> scheduledSequence) {
         Job[] schedule = new Job[allJobs.length];
         Job[] unscheduled = createUnscheduledSequence(scheduledSequence);
         SortingAlgorithm.selectionSort(unscheduled, true);
@@ -85,7 +86,7 @@ public class Schedule {
     }
 
 
-    public Job[] createUnscheduledSequence(ArrayList<Job> scheduledSequence){
+    public Job[] createUnscheduledSequence(LinkedList<Job> scheduledSequence){
         Job[] unscheduled = new Job[allJobs.length-scheduledSequence.size()];
         int k = 0;
         for (Job job : allJobs) {
@@ -104,7 +105,7 @@ public class Schedule {
      * @return
      */
 
-    public boolean checkSequence(Job job, ArrayList<Job> scheduledSequence) {
+    public boolean checkSequence(Job job, LinkedList<Job> scheduledSequence) {
         for (Job scheduledJob : scheduledSequence) {
             if (Objects.equals(job.getName(), scheduledJob.getName())) {
                 return false;
