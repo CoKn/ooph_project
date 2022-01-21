@@ -57,8 +57,12 @@ public class Job implements Sortable, Cloneable {
     }
 
     @Override
-    public double sortValue() {
-        return lengthPeriod;
+    public double sortValue(String attribute) {
+        return switch (attribute) {
+            case "lengthPeriod" -> lengthPeriod;
+            case "dueDate" -> dueDate;
+            default -> throw new IllegalStateException("Unexpected value: " + attribute);
+        };
     }
 
     @Override

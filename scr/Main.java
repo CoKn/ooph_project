@@ -2,7 +2,6 @@
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 
 public class Main {
 
@@ -14,9 +13,10 @@ public class Main {
         Job B = new Job("B", 17, 3, 1);
         Job C = new Job("C", 15,8, 5);
         Job D = new Job("D", 13, 5, 8);
-        Job E = new Job("E", 13, 5, 8);
-        Job F = new Job("F", 13, 5, 8);
-        Job G = new Job("G", 13, 5, 8);
+
+        // Job E = new Job("E", 13, 5, 8);
+        // Job F = new Job("F", 13, 5, 8);
+        // Job G = new Job("G", 13, 5, 8);
 
         Job[] allJobs = new Job[]{A, B, C, D};
 

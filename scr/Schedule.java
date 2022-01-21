@@ -29,7 +29,7 @@ public class Schedule {
     public Job[] createSchedule(LinkedList<Job> scheduledSequence) {
         Job[] schedule = new Job[allJobs.length];
         Job[] unscheduled = createUnscheduledSequence(scheduledSequence);
-        SortingAlgorithm.selectionSort(unscheduled, true);
+        SortingAlgorithm.selectionSort(unscheduled, true, "dueDate");
 
         // add the already scheduled Jobs to the schedule
         int j = 0;

@@ -7,7 +7,7 @@ public class SortingAlgorithm {
      * @param arr  Array that has to get sorted
      * @param ascending  sorting order ascending / descending
      */
-    public static void selectionSort(Sortable[] arr, boolean ascending){
+    public static void selectionSort(Sortable[] arr, boolean ascending, String attribute){
 
         for(int i =0; i < arr.length; i++){
 
@@ -17,9 +17,9 @@ public class SortingAlgorithm {
 
 
             for(int j = i+1; j < arr.length; j++){
-                if(ascending && arr[j].sortValue() < arr[minMax].sortValue()){
+                if(ascending && arr[j].sortValue(attribute) < arr[minMax].sortValue(attribute)){
                     minMax = j;
-                }else if(!ascending && arr[j].sortValue() > arr[minMax].sortValue()){
+                }else if(!ascending && arr[j].sortValue(attribute) > arr[minMax].sortValue(attribute)){
                     minMax = j;
                 }
             }
