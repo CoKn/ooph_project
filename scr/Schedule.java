@@ -121,10 +121,10 @@ public class Schedule {
         return Arrays.toString(schedule) + " " + this.objFunctionValue;
     }
 
-    public static String displayJobSequence(ArrayList<Job> sequence){
-        String[] schedule = new String[sequence.size()];
-        for(int i=0; i< sequence.size(); i++){
-            schedule[i] = sequence.get(i).getName();
+    public String displayJobSequence(){
+        String[] schedule = new String[scheduledSequence.size()];
+        for(int i=0; i< scheduledSequence.size(); i++){
+            schedule[i] = scheduledSequence.get(i).getName();
         }
         return Arrays.toString(schedule);
     }

@@ -60,7 +60,11 @@ public class GenericTree {
     }
 
     private void display(GenericTree.Node node){
-        StringBuilder str = new StringBuilder(node.data.displayJobs() + "-> ");
+
+        int unscheduled = node.data.allJobs.length - node.data.scheduledSequence.size();
+
+        StringBuilder str = new StringBuilder(node.data.displayJobSequence() +
+                "*".repeat(Math.max(0, unscheduled)) + " " + node.data.displayJobs() + "-> ");
 
         for(GenericTree.Node child: node.children){
             str.append(child.data.displayJobs()).append(", ");
