@@ -20,15 +20,15 @@ public class Branch {
     public static void loopBranch(GenericTree tree){
         ArrayList<GenericTree.Node> queueNodes = new ArrayList<>();
         queueNodes.add(tree.getRoot());
-        ArrayList<GenericTree.Node> optimalScheduleNode = deepCopyListArrayNodes(queueNodes);
+        ArrayList<GenericTree.Node> optimalScheduleNodes = deepCopyListArrayNodes(queueNodes);
 
         while (queueNodes.size()>0){
-            optimalScheduleNode = branch(tree, queueNodes.get(queueNodes.size()-1), queueNodes, optimalScheduleNode);
+            branch(tree, queueNodes.get(queueNodes.size()-1), queueNodes, optimalScheduleNodes);
         }
 
         StringBuilder str = new StringBuilder("The optimal schedules are: ");
-        for(GenericTree.Node node: optimalScheduleNode){
-            str.append(node.getData().displayJobs());
+        for(GenericTree.Node node: optimalScheduleNodes){
+            str.append(node.getData().displayJobs()).append(", ");
         }
         System.out.println(str);
     }
@@ -37,8 +37,10 @@ public class Branch {
      * Branch a Node
      * @param tree
      */
-    public static ArrayList<GenericTree.Node> branch(GenericTree tree, GenericTree.Node parentNode, ArrayList<GenericTree.Node> queueNodes,
-                              ArrayList<GenericTree.Node> optimalSchedule){
+    public static void branch(GenericTree tree,
+                              GenericTree.Node parentNode,
+                              ArrayList<GenericTree.Node> queueNodes,
+                              ArrayList<GenericTree.Node> optimalScheduleNodes){
 
         ArrayList<Job> scheduledSequenceReference = deepCopyListArray(parentNode.getData().scheduledSequence);
 
@@ -65,10 +67,8 @@ public class Branch {
 
         queueNodes.remove(parentNode);
 
-        optimalSchedule = findMinLateness(parentNode, queueNodes, optimalSchedule);
+        findMinLateness(parentNode, queueNodes, optimalScheduleNodes);
         // System.out.println(optimalSchedule.getData().scheduledSequence.size());
-
-        return optimalSchedule;
 
     }
 
@@ -89,8 +89,9 @@ public class Branch {
      * @param parentNode
      * @return
      */
-    private static ArrayList<GenericTree.Node> findMinLateness(GenericTree.Node parentNode, ArrayList<GenericTree.Node> queueNodes,
-                                                               ArrayList<GenericTree.Node> optimalScheduleNode){
+    private static void findMinLateness(GenericTree.Node parentNode,
+                                                               ArrayList<GenericTree.Node> queueNodes,
+                                                               ArrayList<GenericTree.Node> optimalScheduleNodes){
 
         double minLateness = parentNode.getData().objFunctionValue;
         ArrayList<GenericTree.Node> localOptimums = new ArrayList<>();
@@ -99,6 +100,7 @@ public class Branch {
 
             if(childNode.getData().objFunctionValue < minLateness){
                 minLateness = childNode.getData().objFunctionValue;
+                optimalScheduleNodes.clear();
                 localOptimums.clear();
                 localOptimums.add(childNode);
 
@@ -109,10 +111,11 @@ public class Branch {
 
         }
         queueNodes.addAll(localOptimums);
-        if (localOptimums.size()>0){
-            return localOptimums;
-        } else return optimalScheduleNode;
 
+        if (localOptimums.size()>0 &&
+                localOptimums.get(0).getData().scheduledSequence.size() == localOptimums.get(0).getData().allJobs.length){
+            optimalScheduleNodes.addAll(localOptimums);
+        }
     }
 
     /**
