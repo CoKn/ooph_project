@@ -5,7 +5,7 @@
 public class Job implements Sortable, Cloneable {
 
     private final double dueDate;
-    private final double lengthPeriod;
+    private double lengthPeriod;
     private final double releaseDate;
     private final String name;
 
@@ -32,6 +32,11 @@ public class Job implements Sortable, Cloneable {
     public String getName() {
         return name;
     }
+
+    public void setLengthPeriod(double lengthPeriod) {
+        this.lengthPeriod = lengthPeriod;
+    }
+
 
     /**
      * calculates the lateness of the Job, given a specified starting date

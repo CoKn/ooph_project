@@ -18,9 +18,8 @@ public class GenericTree {
         @Override
         public Node clone() {
             try {
-                Node clone = (Node) super.clone();
                 // TODO: copy mutable state here, so the clone can't change the internals of the original
-                return clone;
+                return (Node) super.clone();
             } catch (CloneNotSupportedException e) {
                 throw new AssertionError();
             }
