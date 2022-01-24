@@ -184,13 +184,17 @@ public class Schedule {
                 // check if were latest at the second to last index of out unscheduled sequence
                 // check if the next job in the sequence can start at the current starting point
                 if (isUnscheduled && i != sequence.size() - 1 && sequence.get(i+1).getReleaseDate() > startingPoint) {
+                    //TODO: besser schreiben, Prozess dynamisch anpassen
 
                     // the period length of the job that is preempted is shortened, so when its scheduled,
-                    // so it an continue exactly where it left of
-                    //TODO: bsser schreiben
+                    // so it and continue exactly where it left of
+                    // if only the successor job fits into gap between precessor and current job
                     if(sequence.get(i+1).getLengthPeriod() - timeToSubstract > 0) {
                         sequence.get(i + 1).setRemainingPeriod(sequence.get(i + 1).getLengthPeriod() - timeToSubstract);
-                    } else if(i != sequence.size() - 2){
+
+                        // if more than the direct successor fits into gap, also the job scheduled 2 places behind current
+                        // job is added in the gap
+                    } else if (i != sequence.size() - 2){
                         timeToSubstract = -(sequence.get(i+1).getLengthPeriod() - timeToSubstract);
                         sequence.get(i+1).setRemainingPeriod(0);
                         sequence.get(i+2).setRemainingPeriod(sequence.get(i+2).getRemainingPeriod()- timeToSubstract);
