@@ -5,9 +5,10 @@
 public class Job implements Sortable, Cloneable {
 
     private final double dueDate;
-    private double lengthPeriod;
+    private final double lengthPeriod;
     private final double releaseDate;
     private final String name;
+    private double remainingPeriod;
 
 
     public Job(String name, double dueDate, double length, double releaseDate) {
@@ -15,11 +16,12 @@ public class Job implements Sortable, Cloneable {
         this.dueDate = dueDate;
         this.lengthPeriod = length;
         this.releaseDate = releaseDate;
+        this.remainingPeriod = length;
     }
 
-    public double getDueDate() {
-        return dueDate;
-    }
+//    public double getDueDate() {
+//        return dueDate;
+//    }
 
     public double getLengthPeriod() {
         return lengthPeriod;
@@ -33,16 +35,21 @@ public class Job implements Sortable, Cloneable {
         return name;
     }
 
-    public void setLengthPeriod(double lengthPeriod) {
-        this.lengthPeriod = lengthPeriod;
+//    public void setLengthPeriod(double lengthPeriod) {
+//        this.lengthPeriod = lengthPeriod;
+//    }
+
+    public void setRemainingPeriod(double remainingPeriod) {
+        this.remainingPeriod = remainingPeriod;
     }
 
+    public double getRemainingPeriod() {
+        return remainingPeriod;
+    }
 
     /**
-     * calculates the lateness of the Job, given a specified starting date
-     *
-     *
-     * @param startDate
+     * calculates the lateness of the Job, given a specified starting date*
+     * @param startDate, when the job can start
      * @return how late the Job is
      */
     protected double calculateLateness(double startDate){
@@ -52,9 +59,7 @@ public class Job implements Sortable, Cloneable {
 
     /**
      * checks if Job can start at specified starting date, or if it's before its releaseDate
-     *
-     *
-     * @param startDate
+     * @param startDate indicates when a job could start based on precessor
      * @return true if Job can be started
      */
     protected boolean checkReleaseDate(double startDate){
