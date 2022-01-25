@@ -72,7 +72,7 @@ public class GenericTree {
 
         int unscheduled = node.data.allJobs.length - node.data.scheduledSequence.size();
 
-        StringBuilder str = new StringBuilder(node.data.displayJobList() +
+        StringBuilder str = new StringBuilder(node.data.displayJobList() + " " +
                 "*".repeat(Math.max(0, unscheduled)) + " " + node.data.displayJobsArray() + "-> ");
 
         for(GenericTree.Node child: node.children){

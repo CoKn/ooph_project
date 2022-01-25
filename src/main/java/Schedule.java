@@ -54,44 +54,6 @@ public class Schedule {
         return schedule;
     }
 
-//    /**
-//     * Checks if a job in the unscheduled sequence has already appeared in the scheduled part
-//     * @param job  job of the unscheduled sequence to be checked in the scheduled part
-//     * @return  true if the value is not in the scheduled part
-//     */
-//    public boolean checkValue(Job job) {
-//        for (Job value : scheduledSequence) {
-//            if (job == value) return false;
-//        }
-//        return true;
-//    }
-
-
-/*
-    public double calculateObjFuncValue(){
-        double maxLateness = 0;
-        double startingPoint = schedule[0].getReleaseDate();  // start with the schedule's first Job release date
-        for(Job job : schedule){
-            // check if the job's lateness if higher than the maxLateness
-            if(job.calculateLateness(startingPoint)>maxLateness){
-                maxLateness = job.calculateLateness(startingPoint);
-            }
-            // updates the startingPoint for the next job in the schedule
-
-            // if the startingPoint is after the releaseDate, startingPoint is updated by adding the
-            // period length of job
-            else if(job.checkReleaseDate(startingPoint)) {
-                startingPoint += job.getLengthPeriod();
-            }
-            //otherwise, the difference between releaseDate and startingPoint plus the job's
-            // length in periods is added
-            else startingPoint += (job.getReleaseDate()-startingPoint) + job.getLengthPeriod();
-
-        }
-        return maxLateness;
-    }
-
-     */
 
     /**
      * created the Job sequence that is not fixed by Branch and Bound (unscheduled sequence)
@@ -132,8 +94,8 @@ public class Schedule {
         for(int i=0; i< schedule.length; i++){
             schedule[i] = this.schedule[i].getName();
         }
-        if (feasibleSolution) return Arrays.toString(schedule) + " " + this.objFunctionValue + " feasible";
-        else return Arrays.toString(schedule) + " " + this.objFunctionValue + " unfeasible";
+        if (feasibleSolution) return Arrays.toString(schedule) + " " + this.objFunctionValue; // + " feasible"
+        else return Arrays.toString(schedule) + " " + this.objFunctionValue; //  + " unfeasible"
     }
 
     /**
@@ -145,8 +107,8 @@ public class Schedule {
         for(int i=0; i< scheduledSequence.size(); i++){
             schedule[i] = scheduledSequence.get(i).getName();
         }
-        if (feasibleSolution) return Arrays.toString(schedule) + " " + this.objFunctionValue + " feasible";
-        else return Arrays.toString(schedule) + " " + this.objFunctionValue + " unfeasible";
+        if (feasibleSolution) return Arrays.toString(schedule) + " " + this.objFunctionValue + " feasible"; // + " feasible"
+        else return Arrays.toString(schedule) + " " + this.objFunctionValue + " unfeasible"; //  + " unfeasible"
     }
 
     /**
@@ -156,20 +118,25 @@ public class Schedule {
      * @param isUnscheduled boolean, indicates if preemption is allowed when calculating the maxLateness
      * @param startingPoint double, indicated the starting point of the sequence - for unscheduled part, the startingPoint
      *                      is derived by the end of the scheduled sequence
-     * @param maxLateness   double, indicated the maxlateness of the fixed sequence, so only higher values in the
+     * @param maxLateness   double, indicated the max lateness of the fixed sequence, so only higher values in the
      *                      unscheduled sequence can be added
      * @return double []    to save both the starting point and the maxLateness or the subsequence
      */
-    public double [] calculatePartialLateness(LinkedList<Job> sequence, boolean isUnscheduled, double startingPoint, double maxLateness) {
+    public double [] calculatePartialLateness(LinkedList<Job> sequence,
+                                              boolean isUnscheduled,
+                                              double startingPoint,
+                                              double maxLateness) {
+
         double timeToSubstract;
         feasibleSolution = true;
         double [] toReturn = new double [2];
+
         for (int i = 0; i < sequence.size(); i++) {
             //set new value for maxLateness, if it exceeds the old value
             if (sequence.get(i).calculateLateness(startingPoint) > maxLateness) {
                 maxLateness = sequence.get(i).calculateLateness(startingPoint);
             }
-            //checks if the job can start directly after to previous job has ended
+            //checks if the job can start directly after the previous job has ended
             if (sequence.get(i).checkReleaseDate(startingPoint)) {
                 startingPoint += sequence.get(i).getRemainingPeriod();
             }
@@ -226,14 +193,69 @@ public class Schedule {
      * @return double, the maxLateness
      */
     public double calculateObjFuncValue(LinkedList<Job> scheduled){
-        // first the maxlateness of the fixed sequence has to be calculated
+        // first the max lateness of the fixed sequence has to be calculated
         double [] toReturn = calculatePartialLateness(scheduled, false, 0, 0);
-        // the maxlateness of the unscheduled sequence is calculated
+        // the max lateness of the unscheduled sequence is calculated
         // happens in two different function calls since the unscheduled sequence allows preemption
         double [] secondReturn = calculatePartialLateness(createUnscheduledSequence(scheduled), true, toReturn[0], toReturn[1]);
-        // the maxlateness of the schedule as a whole is returned
+        // the max lateness of the schedule as a whole is returned
         return secondReturn[1];
     }
+
+
+    public double calculateMaxLatenessScheduled(){
+        Job firstScheduledJob = scheduledSequence.get(0);
+        double maxLateness = firstScheduledJob.calculateLateness(firstScheduledJob.getReleaseDate());
+        for (int i=1; i<scheduledSequence.size(); i++){
+            Job currentJob = scheduledSequence.get(i);
+            double latenessOfJob = currentJob.calculateLateness(currentJob.getReleaseDate());
+            if (latenessOfJob > maxLateness){
+                maxLateness = latenessOfJob;
+            }
+        }
+        return maxLateness;
+    }
+
+
+    //    /**
+//     * Checks if a job in the unscheduled sequence has already appeared in the scheduled part
+//     * @param job  job of the unscheduled sequence to be checked in the scheduled part
+//     * @return  true if the value is not in the scheduled part
+//     */
+//    public boolean checkValue(Job job) {
+//        for (Job value : scheduledSequence) {
+//            if (job == value) return false;
+//        }
+//        return true;
+//    }
+
+
+/*
+    public double calculateObjFuncValue(){
+        double maxLateness = 0;
+        double startingPoint = schedule[0].getReleaseDate();  // start with the schedule's first Job release date
+        for(Job job : schedule){
+            // check if the job's lateness if higher than the maxLateness
+            if(job.calculateLateness(startingPoint)>maxLateness){
+                maxLateness = job.calculateLateness(startingPoint);
+            }
+            // updates the startingPoint for the next job in the schedule
+
+            // if the startingPoint is after the releaseDate, startingPoint is updated by adding the
+            // period length of job
+            else if(job.checkReleaseDate(startingPoint)) {
+                startingPoint += job.getLengthPeriod();
+            }
+            //otherwise, the difference between releaseDate and startingPoint plus the job's
+            // length in periods is added
+            else startingPoint += (job.getReleaseDate()-startingPoint) + job.getLengthPeriod();
+
+        }
+        return maxLateness;
+    }
+
+     */
+
 
     /*
     public double [] calculatePartialLateness(Job[] sequence, boolean unscheduled, double startingPoint, double maxLateness) {

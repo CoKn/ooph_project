@@ -40,11 +40,11 @@ public class Branch {
                               LinkedList<GenericTree.Node> queueNodes,
                               LinkedList<GenericTree.Node> optimalScheduleNodes){
 
-        LinkedList<Job> scheduledSequenceReference = deepCopyListArray(parentNode.getData().scheduledSequence);
+        LinkedList<Job> scheduledSequenceReference = deepCopyLinkedList(parentNode.getData().scheduledSequence);
 
         for(int i=parentNode.getData().scheduledSequence.size(); i<parentNode.getData().allJobs.length; i++){
 
-            LinkedList<Job> scheduledSequence = deepCopyListArray(parentNode.getData().scheduledSequence);
+            LinkedList<Job> scheduledSequence = deepCopyLinkedList(parentNode.getData().scheduledSequence);
 
             for(Job job: parentNode.getData().allJobs) {
 
@@ -56,7 +56,7 @@ public class Branch {
 
             }
             // System.out.println(Schedule.displayJobSequence(deepCopyListArray(scheduledSequence)));
-            Schedule schedule = new Schedule(deepCopyListArray(scheduledSequence), parentNode.getData().allJobs);
+            Schedule schedule = new Schedule(deepCopyLinkedList(scheduledSequence), parentNode.getData().allJobs);
 
             tree.addNode(schedule, parentNode);
 
@@ -94,13 +94,13 @@ public class Branch {
 
         for(GenericTree.Node childNode: parentNode.children){
 
-            if(childNode.getData().objFunctionValue < minLateness){
+            if(childNode.getData().objFunctionValue < minLateness){  //  && childNode.getData().feasibleSolution
                 minLateness = childNode.getData().objFunctionValue;
                 optimalScheduleNodes.clear();
                 localOptimums.clear();
                 localOptimums.add(childNode);
 
-            } else if(childNode.getData().objFunctionValue == minLateness) {
+            } else if(childNode.getData().objFunctionValue == minLateness) {  // && childNode.getData().feasibleSolution
                 minLateness = childNode.getData().objFunctionValue;
                 localOptimums.add(childNode);
             }
@@ -119,7 +119,7 @@ public class Branch {
      * @param jobs
      * @return
      */
-    private static LinkedList<Job> deepCopyListArray(LinkedList<Job> jobs){
+    private static LinkedList<Job> deepCopyLinkedList(LinkedList<Job> jobs){
         LinkedList<Job> sequence = new LinkedList<>();
         for(Job job : jobs) {
             sequence.add(job.clone());

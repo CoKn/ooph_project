@@ -63,7 +63,7 @@ public class Job implements Sortable, Cloneable {
      * @return true if Job can be started
      */
     protected boolean checkReleaseDate(double startDate){
-        return (startDate > releaseDate);
+        return (startDate >= releaseDate);
     }
 
     @Override
