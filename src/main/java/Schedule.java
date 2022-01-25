@@ -94,8 +94,8 @@ public class Schedule {
         for(int i=0; i< schedule.length; i++){
             schedule[i] = this.schedule[i].getName();
         }
-        if (feasibleSolution) return Arrays.toString(schedule) + " " + this.objFunctionValue; // + " feasible"
-        else return Arrays.toString(schedule) + " " + this.objFunctionValue; //  + " unfeasible"
+        if (feasibleSolution) return Arrays.toString(schedule) + " " + this.objFunctionValue+ " f"; // + " feasible"
+        else return Arrays.toString(schedule) + " " + this.objFunctionValue+ " uf"; //  + " unfeasible"
     }
 
     /**
