@@ -89,31 +89,46 @@ public class Branch {
                                         LinkedList<GenericTree.Node> queueNodes,
                                         LinkedList<GenericTree.Node> optimalScheduleNodes){
 
-        double minLateness = 10000;//parentNode.children.get(0).getData().objFunctionValue;
-        LinkedList<GenericTree.Node> localOptimums = new LinkedList<>();
+        double minLatenessUF = 0;
+        double minLatenessF = 0;
+        LinkedList<GenericTree.Node> localOptimumsUf = new LinkedList<>();
+        LinkedList<GenericTree.Node> localOptimumsF = new LinkedList<>();
 
         for(GenericTree.Node childNode: parentNode.children) {
             if (!childNode.getData().feasibleSolution) {
-                if (childNode.getData().objFunctionValue < minLateness) {  //  && childNode.getData().feasibleSolution
-                    minLateness = childNode.getData().objFunctionValue;
-                    optimalScheduleNodes.clear();
-                    localOptimums.clear();
-                    localOptimums.add(childNode);
+                if (localOptimumsUf.size() == 0) {
+                    minLatenessUF = parentNode.children.get(0).getData().objFunctionValue;
+                    localOptimumsUf.add(childNode);
 
-                } else if (childNode.getData().objFunctionValue == minLateness) {  // && childNode.getData().feasibleSolution
-                    minLateness = childNode.getData().objFunctionValue;
-                    localOptimums.add(childNode);
+                } else if (childNode.getData().objFunctionValue < minLatenessUF) {
+                    minLatenessUF = childNode.getData().objFunctionValue;
+                    optimalScheduleNodes.clear();
+                    localOptimumsUf.clear();
+                    localOptimumsUf.add(childNode);
+
+                } else if (childNode.getData().objFunctionValue == minLatenessUF) {
+                    minLatenessUF = childNode.getData().objFunctionValue;
+                    localOptimumsUf.add(childNode);
                 }
 
             } else {
-                // hier müssen wir das feasible optimum bestimmen
+                if (localOptimumsF.size() == 0){
+                    minLatenessF = childNode.getData().objFunctionValue;
+                    localOptimumsF.add(childNode);
+                } else if (childNode.getData().objFunctionValue < minLatenessF){
+                    minLatenessF = childNode.getData().objFunctionValue;
+                    localOptimumsF.clear();
+                    localOptimumsF.add(childNode);
+                } else if (childNode.getData().objFunctionValue == minLatenessF) {
+                    localOptimumsF.add(childNode);
+                }
             }
         }
-        queueNodes.addAll(localOptimums);
+        queueNodes.addAll(localOptimumsUf);
 
-        if (localOptimums.size()>0 &&
-                localOptimums.get(0).getData().scheduledSequence.size() == localOptimums.get(0).getData().allJobs.length){
-            optimalScheduleNodes.addAll(localOptimums);
+        if (localOptimumsF.size()>0) {
+            optimalScheduleNodes.clear();
+            optimalScheduleNodes.addAll(localOptimumsF);
         }
     }
 

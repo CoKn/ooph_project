@@ -13,10 +13,11 @@ public class ScheduleTest {
     Job D = new Job("D", 13, 5, 8);
 
     Job[] allJobs = new Job[]{A, B, C, D};
+    LinkedList<Job> scheduledSequence = new LinkedList<>();
 
     @Test
     public void testCalculateMaxLatenessScheduledOneJob() {
-        LinkedList<Job> scheduledSequence = new LinkedList<>();
+        scheduledSequence.clear();
         scheduledSequence.add(A);
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
         Assert.assertEquals(-8.0, schedule.calculateMaxLatenessScheduled(), 0.0);
@@ -24,7 +25,7 @@ public class ScheduleTest {
 
     @Test
     public void testCalculateMaxLatenessScheduledTwoJobs() {
-        LinkedList<Job> scheduledSequence = new LinkedList<>();
+        scheduledSequence.clear();
         scheduledSequence.add(A);
         scheduledSequence.add(B);
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
@@ -33,17 +34,17 @@ public class ScheduleTest {
 
     @Test
     public void testCalculateMaxLatenessScheduledThreeJobs() {
-        LinkedList<Job> scheduledSequence = new LinkedList<>();
+        scheduledSequence.clear();
         scheduledSequence.add(A);
         scheduledSequence.add(B);
         scheduledSequence.add(C);
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
-        Assert.assertEquals(2.0, schedule.calculateMaxLatenessScheduled(), 0.0);
+        Assert.assertEquals(-2, schedule.calculateMaxLatenessScheduled(), 0.0);
     }
 
     @Test
     public void testCalculateMaxLatenessScheduledFourJobs() {
-        LinkedList<Job> scheduledSequence = new LinkedList<>();
+        scheduledSequence.clear();
         scheduledSequence.add(A);
         scheduledSequence.add(B);
         scheduledSequence.add(C);
