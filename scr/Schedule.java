@@ -6,7 +6,6 @@
  * calculates the maximum lateness
  */
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -125,25 +124,29 @@ public class Schedule {
     }
 
     /**
-     * helps to print the name of the job sequence on the console
+     * Displays jobs names stored in an array, functionValue and feasible/unfeasible
      * @return the name of the Job sequence in our schedule and its objective function value
      */
-    //TODO: können wir hier noch dazu schreiben, ob die Lösung feasible ist?
-    //TODO: was ist genau der Unterschied zwischen diesen beiden Funktionen?
-    public String displayJobs(){
+    public String displayJobsArray(){
         String[] schedule = new String[this.schedule.length];
         for(int i=0; i< schedule.length; i++){
             schedule[i] = this.schedule[i].getName();
         }
-        return Arrays.toString(schedule) + " " + this.objFunctionValue;
+        if (feasibleSolution) return Arrays.toString(schedule) + " " + this.objFunctionValue + " feasible";
+        else return Arrays.toString(schedule) + " " + this.objFunctionValue + " unfeasible";
     }
 
-    public String displayJobSequence(){
+    /**
+     * Displays jobs names stored in an array, functionValue and feasible/unfeasible
+     * @return the job name as string
+     */
+    public String displayJobList(){
         String[] schedule = new String[scheduledSequence.size()];
         for(int i=0; i< scheduledSequence.size(); i++){
             schedule[i] = scheduledSequence.get(i).getName();
         }
-        return Arrays.toString(schedule);
+        if (feasibleSolution) return Arrays.toString(schedule) + " " + this.objFunctionValue + " feasible";
+        else return Arrays.toString(schedule) + " " + this.objFunctionValue + " unfeasible";
     }
 
     /**

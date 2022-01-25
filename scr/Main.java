@@ -30,6 +30,7 @@ public class Main {
         tree.display();
 
         System.out.println("Execution time: " + timeElapsed + " milliseconds");
+
     }
 
 

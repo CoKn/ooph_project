@@ -26,7 +26,7 @@ public class Branch {
 
         StringBuilder str = new StringBuilder("The optimal schedules are: ");
         for(GenericTree.Node node: optimalScheduleNodes){
-            str.append(node.getData().displayJobs()).append(", ");
+            str.append(node.getData().displayJobsArray()).append(", ");
         }
         System.out.println(str);
     }
@@ -129,7 +129,7 @@ public class Branch {
 
     private static void printNode(ArrayList<GenericTree.Node> nodes){
         for(GenericTree.Node queueNode: nodes){
-            System.out.println("\n" + queueNode.getData().displayJobs());
+            System.out.println("\n" + queueNode.getData().displayJobsArray());
         }
     }
 
