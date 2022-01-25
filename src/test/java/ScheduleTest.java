@@ -51,4 +51,29 @@ public class ScheduleTest {
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
         Assert.assertEquals(9.0, schedule.calculateMaxLatenessScheduled(), 0.0);
     }
+
+
+    @Test
+    public void testUnscheduledScheduled(){
+        LinkedList<Job> unScheduledSequence = new LinkedList<>();
+        unScheduledSequence.add(D);
+        unScheduledSequence.add(A);
+        unScheduledSequence.add(C);
+        unScheduledSequence.add(B);
+
+        Schedule schedule = new Schedule(unScheduledSequence, allJobs);
+        Assert.assertEquals(5.0, schedule.unscheduledScheduled(), 0.0);
+    }
+
+    @Test
+    public void testUnscheduledScheduledADCB(){
+        LinkedList<Job> unScheduledSequence = new LinkedList<>();
+        unScheduledSequence.add(A);
+        unScheduledSequence.add(D);
+        unScheduledSequence.add(C);
+        unScheduledSequence.add(B);
+
+        Schedule schedule = new Schedule(unScheduledSequence, allJobs);
+        Assert.assertEquals(5.0, schedule.unscheduledScheduled(), 0.0);
+    }
 }

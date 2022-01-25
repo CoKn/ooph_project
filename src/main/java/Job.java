@@ -53,8 +53,8 @@ public class Job implements Sortable, Cloneable {
      * @return how late the Job is
      */
     protected double calculateLateness(double startDate){
-        if(checkReleaseDate(startDate)) return startDate + lengthPeriod - dueDate;
-        else return releaseDate + lengthPeriod - dueDate;
+        if(checkReleaseDate(startDate)) return startDate + remainingPeriod - dueDate;
+        else return releaseDate + remainingPeriod - dueDate;
     }
 
     /**

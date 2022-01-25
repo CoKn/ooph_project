@@ -122,6 +122,61 @@ public class Schedule {
      *                      unscheduled sequence can be added
      * @return double []    to save both the starting point and the maxLateness or the subsequence
      */
+
+
+
+    public double [] calculatePartialLateness(LinkedList<Job> sequence, boolean isUnscheduled, double startingPoint, double maxLateness) {
+        double timeToSubtract;
+        feasibleSolution = true;
+        double [] toReturn = new double [2];
+        for (int i = 0; i < sequence.size(); i++) {
+            //set new value for maxLateness, if it exceeds the old value
+            if (sequence.get(i).calculateLateness(startingPoint) > maxLateness) {
+                maxLateness = sequence.get(i).calculateLateness(startingPoint);
+            }
+            //checks if the job can start directly after to previous job has ended
+            if (sequence.get(i).checkReleaseDate(startingPoint)) {
+                startingPoint += sequence.get(i).getRemainingPeriod();
+            }
+            // otherwise, the difference between releaseDate and startingPoint plus the job's
+            // length in periods is added
+            else {
+                // calculate the time between the previous job's end and the release date of the next in sequence
+                timeToSubtract = (sequence.get(i).getReleaseDate() - startingPoint);
+                // Here the preemption logic is happening
+                if (isUnscheduled && i != sequence.size() - 1 && sequence.get(i+1).getReleaseDate() >= startingPoint) {
+                    //TODO: besser schreiben, Prozess dynamisch anpassen
+
+                    // the period length of the job that is preempted is shortened, so when its scheduled,
+                    // so it and continue exactly where it left of
+                    // if only the successor job fits into gap between precessor and current job
+                    if(sequence.get(i+1).getLengthPeriod() - timeToSubtract > 0) {
+                        sequence.get(i + 1).setRemainingPeriod(sequence.get(i + 1).getLengthPeriod() - timeToSubtract);
+                        // if more than the direct successor fits into gap, also the job scheduled 2 places behind current
+                        // job is added in the gap
+                    } else {
+                        timeToSubtract = -(sequence.get(i+1).getLengthPeriod() - timeToSubtract);
+                        sequence.get(i+1).setRemainingPeriod(0);
+                        sequence.get(i+2).setRemainingPeriod(sequence.get(i+2).getRemainingPeriod()- timeToSubtract);
+                    }
+                    //since the schedule is created with preemption, it is not a feasible solution anymore
+                    feasibleSolution = false;
+                }
+                // refresh the startingPoint for the next job in the sequence in the next iteration
+                startingPoint += sequence.get(i).getRemainingPeriod() + sequence.get(i).getReleaseDate();
+                // reset the old period length, so when the job is scheduled in another branch,
+                // the period length is at its original level again
+                sequence.get(i).setRemainingPeriod(sequence.get(i).getLengthPeriod());
+            }
+        }
+        // both the startingPoint, and the maxLateness have to be returned when the maxlateness
+        // for the unscheduled sequence is being calculated
+        toReturn[0] = startingPoint;
+        toReturn[1] = maxLateness;
+
+        return toReturn;
+    }
+    /*
     public double [] calculatePartialLateness(LinkedList<Job> sequence,
                                               boolean isUnscheduled,
                                               double startingPoint,
@@ -153,7 +208,7 @@ public class Schedule {
                 // check if we are in the unscheduled part of our schedule (no preemption allowed in fixed part)
                 // check if were latest at the second to last index of out unscheduled sequence
                 // check if the next job in the sequence can start at the current starting point
-                if (isUnscheduled && i != sequence.size() - 1 && sequence.get(i+1).getReleaseDate() > startingPoint) {
+                if (isUnscheduled && i != sequence.size() - 1 && sequence.get(i+1).getReleaseDate() >= startingPoint) {
                     //TODO: besser schreiben, Prozess dynamisch anpassen
 
                     // the period length of the job that is preempted is shortened, so when its scheduled,
@@ -186,7 +241,7 @@ public class Schedule {
 
         return toReturn;
     }
-
+*/
     /**
      * Calculates the objective function value for the whole schedule
      * @param scheduled the part of the schedule that is fixed
@@ -203,21 +258,91 @@ public class Schedule {
     }
 
 
-    public double calculateMaxLatenessScheduled(){
-        Job firstScheduledJob = scheduledSequence.get(0);
-        double maxLateness = firstScheduledJob.calculateLateness(firstScheduledJob.getReleaseDate());
-        for (int i=1; i<scheduledSequence.size(); i++){
-            Job currentJob = scheduledSequence.get(i);
-            double latenessOfJob = currentJob.calculateLateness(currentJob.getReleaseDate());
-            if (latenessOfJob > maxLateness){
-                maxLateness = latenessOfJob;
+    public double calculateMaxLatenessScheduled() {
+
+        double timeToSubtract;
+        feasibleSolution = true;
+        double[] toReturn = new double[2];
+        double startingPoint = 0;
+        double maxLateness = scheduledSequence.get(0).calculateLateness(startingPoint);
+        for (Job job : scheduledSequence) {
+            //set new value for maxLateness, if it exceeds the old value
+            if (job.calculateLateness(startingPoint) > maxLateness) {
+                maxLateness = job.calculateLateness(startingPoint);
+            }
+            //checks if the job can start directly after to previous job has ended
+            if (job.checkReleaseDate(startingPoint)) {
+                startingPoint += job.getRemainingPeriod();
+            }
+            // otherwise, the difference between releaseDate and startingPoint plus the job's
+            // length in periods is added
+            else {
+                if (job.calculateLateness(job.getReleaseDate()) > maxLateness) {
+                    maxLateness = job.calculateLateness(job.getReleaseDate());
+                }
             }
         }
         return maxLateness;
     }
 
+    public double unscheduledScheduled() {
 
-    //    /**
+
+        feasibleSolution = true;
+        double[] toReturn = new double[2];
+        double startingPoint = 0;
+        double maxLateness = scheduledSequence.get(0).calculateLateness(startingPoint);
+        for (int i = 0; i < scheduledSequence.size(); i++) {
+            //set new value for maxLateness, if it exceeds the old value
+            if (scheduledSequence.get(i).calculateLateness(startingPoint) > maxLateness) {
+                maxLateness = scheduledSequence.get(i).calculateLateness(startingPoint);
+            }
+            //checks if the job can start directly after to previous job has ended
+            if (scheduledSequence.get(i).checkReleaseDate(startingPoint)) {
+                startingPoint += scheduledSequence.get(i).getRemainingPeriod();
+            }
+            // otherwise, the difference between releaseDate and startingPoint plus the job's
+            // length in periods is added
+
+            //Preemption Logic
+            else {
+                startingPoint = preemption(startingPoint, i);
+                startingPoint += scheduledSequence.get(i).getRemainingPeriod();
+            }
+
+        }
+        for(Job job: scheduledSequence){
+            job.setRemainingPeriod(job.getLengthPeriod());
+        }
+        return maxLateness;
+    }
+
+
+    public double preemption(double startingPoint, int i) {
+        feasibleSolution = false;
+        double timeToSubtract;
+        timeToSubtract = scheduledSequence.get(i).getReleaseDate() - startingPoint;
+        int j = i;
+        while (timeToSubtract > 0 && j < scheduledSequence.size() - 1) {
+            if (scheduledSequence.get(j + 1).getReleaseDate() <= startingPoint) {
+
+                // falls die Lücke größer ist als die Joblänge, die e füllen soll
+                if (timeToSubtract >= scheduledSequence.get(j + 1).getRemainingPeriod()) {
+                    timeToSubtract -= scheduledSequence.get(j + 1).getRemainingPeriod();
+                    scheduledSequence.get(j + 1).setRemainingPeriod(0);
+                    // falls die Lücke kleiner ist, als die Joblänge
+                } else {
+                    scheduledSequence.get(j + 1).setRemainingPeriod(scheduledSequence.get(j + 1).getRemainingPeriod() - timeToSubtract);
+                    timeToSubtract = 0;
+                }
+            }
+            startingPoint += scheduledSequence.get(j + 1).getLengthPeriod() - scheduledSequence.get(j + 1).getRemainingPeriod();
+            j++;
+        }
+        return startingPoint;
+    }
+
+            //    /**
 //     * Checks if a job in the unscheduled sequence has already appeared in the scheduled part
 //     * @param job  job of the unscheduled sequence to be checked in the scheduled part
 //     * @return  true if the value is not in the scheduled part
@@ -296,5 +421,5 @@ public class Schedule {
     }
 
      */
-}
+        }
 
