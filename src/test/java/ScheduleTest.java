@@ -140,4 +140,9 @@ public class ScheduleTest {
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
         Assert.assertEquals(9.0, schedule.calculateObjFunctionValue(), 0.0);
     }
+
+    @Test
+    public void testPreemption() {
+
+    }
 }
