@@ -15,6 +15,10 @@ public class Branch {
     }
 
 
+    /**
+     *
+     * @param tree
+     */
     public static void loopBranch(GenericTree tree){
         LinkedList<GenericTree.Node> queueNodes = new LinkedList<>();
         queueNodes.add(tree.getRoot());
@@ -70,6 +74,12 @@ public class Branch {
 
     }
 
+    /**
+     *
+     * @param scheduledSequenceReference
+     * @param job
+     * @return
+     */
     public static Boolean checkForEqual(LinkedList<Job> scheduledSequenceReference, Job job){
         for (Job value : scheduledSequenceReference) {
             if (value.getName().equals(job.getName())) {
@@ -96,32 +106,11 @@ public class Branch {
 
         for(GenericTree.Node childNode: parentNode.children) {
             if (!childNode.getData().feasibleSolution) {
-                if (localOptimumsUf.size() == 0) {
-                    minLatenessUF = parentNode.children.get(0).getData().objFunctionValue;
-                    localOptimumsUf.add(childNode);
-
-                } else if (childNode.getData().objFunctionValue < minLatenessUF) {
-                    minLatenessUF = childNode.getData().objFunctionValue;
-                    optimalScheduleNodes.clear();
-                    localOptimumsUf.clear();
-                    localOptimumsUf.add(childNode);
-
-                } else if (childNode.getData().objFunctionValue == minLatenessUF) {
-                    minLatenessUF = childNode.getData().objFunctionValue;
-                    localOptimumsUf.add(childNode);
-                }
+                minLatenessUF = checkUnfeasible(parentNode, childNode, localOptimumsUf,
+                        optimalScheduleNodes, minLatenessUF);
 
             } else {
-                if (localOptimumsF.size() == 0){
-                    minLatenessF = childNode.getData().objFunctionValue;
-                    localOptimumsF.add(childNode);
-                } else if (childNode.getData().objFunctionValue < minLatenessF){
-                    minLatenessF = childNode.getData().objFunctionValue;
-                    localOptimumsF.clear();
-                    localOptimumsF.add(childNode);
-                } else if (childNode.getData().objFunctionValue == minLatenessF) {
-                    localOptimumsF.add(childNode);
-                }
+                minLatenessF = checkFeasible(childNode, localOptimumsF, minLatenessF);
             }
         }
         queueNodes.addAll(localOptimumsUf);
@@ -130,6 +119,66 @@ public class Branch {
             optimalScheduleNodes.clear();
             optimalScheduleNodes.addAll(localOptimumsF);
         }
+    }
+
+    /**
+     * Checks an Unfeasible solution for the min Lateness and adds the min Latenss node to the queue Nodes for next
+     * Branching
+     * @param parentNode
+     * @param childNode
+     * @param localOptimumsUf
+     * @param optimalScheduleNodes
+     * @param minLatenessUF
+     * @return
+     */
+    private static double checkUnfeasible(GenericTree.Node parentNode,
+                                         GenericTree.Node childNode,
+                                         LinkedList<GenericTree.Node> localOptimumsUf,
+                                         LinkedList<GenericTree.Node> optimalScheduleNodes,
+                                         double minLatenessUF) {
+
+        if (localOptimumsUf.size() == 0) {
+            minLatenessUF = parentNode.children.get(0).getData().objFunctionValue;
+            localOptimumsUf.add(childNode);
+
+        } else if (childNode.getData().objFunctionValue < minLatenessUF) {
+            minLatenessUF = childNode.getData().objFunctionValue;
+            optimalScheduleNodes.clear();
+            localOptimumsUf.clear();
+            localOptimumsUf.add(childNode);
+
+        } else if (childNode.getData().objFunctionValue == minLatenessUF) {
+            minLatenessUF = childNode.getData().objFunctionValue;
+            localOptimumsUf.add(childNode);
+        }
+
+        return minLatenessUF;
+    }
+
+
+    /**
+     * Checks a Feasible solution for the min Lateness
+     * @param childNode
+     * @param localOptimumsF
+     * @param minLatenessF
+     * @return the min Lateness
+     */
+    private static double checkFeasible(GenericTree.Node childNode,
+                                        LinkedList<GenericTree.Node> localOptimumsF,
+                                        double minLatenessF) {
+
+        if (localOptimumsF.size() == 0){
+            minLatenessF = childNode.getData().objFunctionValue;
+            localOptimumsF.add(childNode);
+        } else if (childNode.getData().objFunctionValue < minLatenessF){
+            minLatenessF = childNode.getData().objFunctionValue;
+            localOptimumsF.clear();
+            localOptimumsF.add(childNode);
+        } else if (childNode.getData().objFunctionValue == minLatenessF) {
+            localOptimumsF.add(childNode);
+        }
+
+        return minLatenessF;
     }
 
     /**
@@ -151,6 +200,11 @@ public class Branch {
         }
     }
 
+    /**
+     *
+     * @param nodes
+     * @return
+     */
     private static LinkedList<GenericTree.Node> deepCopyListArrayNodes(LinkedList<GenericTree.Node> nodes){
         LinkedList<GenericTree.Node> newNodes = new LinkedList<>();
         for(GenericTree.Node node: nodes) newNodes.add(node.clone());
