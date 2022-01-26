@@ -20,7 +20,7 @@ public class ScheduleTest {
         scheduledSequence.clear();
         scheduledSequence.add(A);
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
-        Assert.assertEquals(-8.0, schedule.calculateMaxLatenessScheduled(), 0.0);
+        Assert.assertEquals(-8.0, schedule.calculateObjFunctionValue(), 0.0);
     }
 
     @Test
@@ -29,7 +29,7 @@ public class ScheduleTest {
         scheduledSequence.add(A);
         scheduledSequence.add(B);
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
-        Assert.assertEquals(-8.0, schedule.calculateMaxLatenessScheduled(), 0.0);
+        Assert.assertEquals(-8.0, schedule.calculateObjFunctionValue(), 0.0);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class ScheduleTest {
         scheduledSequence.add(B);
         scheduledSequence.add(C);
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
-        Assert.assertEquals(-2, schedule.calculateMaxLatenessScheduled(), 0.0);
+        Assert.assertEquals(-2, schedule.calculateObjFunctionValue(), 0.0);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class ScheduleTest {
         scheduledSequence.add(C);
         scheduledSequence.add(D);
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
-        Assert.assertEquals(9.0, schedule.calculateMaxLatenessScheduled(), 0.0);
+        Assert.assertEquals(9.0, schedule.calculateObjFunctionValue(), 0.0);
     }
 
 

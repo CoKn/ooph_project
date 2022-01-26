@@ -42,7 +42,7 @@ public class GenericTree {
     }
 
     /**
-     * Iterrates over a tree
+     * Iterates over a tree
      * @param root
      * @return
      */

@@ -18,7 +18,9 @@ public class Schedule {
     int length;
     boolean feasibleSolution;
 
-
+/**
+ * Constructor
+ */
     public Schedule(LinkedList<Job> scheduledSequence, Job[] allJobs) {
         this.scheduledSequence = scheduledSequence;
         this.allJobs = allJobs;
@@ -62,7 +64,9 @@ public class Schedule {
      */
     public LinkedList<Job> createUnscheduledSequence(LinkedList<Job> scheduledSequence){
         LinkedList<Job> unscheduled = new LinkedList<>();
+
         for (Job job : allJobs) {
+            // if a job is not in the scheduled sequence, it will be added to unscheduled
             if (checkSequence(job, scheduledSequence)) {
                 unscheduled.add(job);
             }
@@ -71,10 +75,10 @@ public class Schedule {
     }
 
     /**
-     * checks if a job is already scheduled in the fixed sequence
+     * checks if a job is already scheduled in the scheduledSequence
      * @param job
      * @param scheduledSequence
-     * @return
+     * @return boolean --> Wrong if job is in scheduledSequence
      */
     public boolean checkSequence(Job job, LinkedList<Job> scheduledSequence) {
         for (Job scheduledJob : scheduledSequence) {
@@ -111,7 +115,7 @@ public class Schedule {
         else return Arrays.toString(schedule) + " " + this.objFunctionValue + " unfeasible"; //  + " unfeasible"
     }
 
-
+/*
     public double calculateMaxLatenessScheduled() {
 
         double timeToSubtract;
@@ -139,6 +143,14 @@ public class Schedule {
         return maxLateness;
     }
 
+ */
+
+
+    /**
+     * Calculates the objective function value of the whole schedule
+     * (scheduledSequence & unscheduled)
+     * @return maxLateness of the sequence
+     */
     public double calculateObjFunctionValue() {
 
         feasibleSolution = true;
@@ -146,27 +158,35 @@ public class Schedule {
         double startingPoint = 0;
         double maxLateness = schedule[0].calculateLateness(startingPoint);
         for (int i = 0; i < schedule.length; i++) {
-            //set new value for maxLateness, if it exceeds the old value
+            //update the value for maxLateness, if the lateness of current Job
+            // exceeds the old value
             if (schedule[i].calculateLateness(startingPoint) > maxLateness) {
                 maxLateness = schedule[i].calculateLateness(startingPoint);
             }
             //checks if the job can start directly after to previous job has ended
+            //if that is the case, the startingPoint is already updated by the job's
+            //remaining periods
             if (schedule[i].checkReleaseDate(startingPoint)) {
                 startingPoint += schedule[i].getRemainingPeriod();
             }
-            // otherwise, the difference between releaseDate and startingPoint plus the job's
-            // length in periods is added
+            // otherwise, if we are in the scheduledSequence part of the schedule,
+            // the difference between releaseDate and startingPoint plus the job's
+            // length in periods is added (since  no preemption is allowed)
+            // index i checks in which part of the schedule we are
             if(!schedule[i].checkReleaseDate(startingPoint) && i < scheduledSequence.size()) {
                 startingPoint += schedule[i].getRemainingPeriod() + schedule[i].getReleaseDate();
             }
 
             //Preemption Logic
+            // only applies to unscheduled Sequence
             if(!schedule[i].checkReleaseDate(startingPoint) && i >= scheduledSequence.size()){
                 startingPoint = preemption(startingPoint, i);
                 startingPoint += schedule[i].getRemainingPeriod();
             }
 
         }
+        // the values of the remainingPeriods have to be set to their original values
+        // the preemption logic might have changed them
         for(Job job: schedule){
             job.setRemainingPeriod(job.getLengthPeriod());
         }
@@ -174,24 +194,34 @@ public class Schedule {
     }
 
 
+    /**
+     * Preemption of jobs
+     * @param startingPoint the starting point before preemption happens
+     * @param i to indicate at which part of the schedule to start
+     * @return startingPoint after preemption is done
+     */
     public double preemption(double startingPoint, int i) {
         feasibleSolution = false;
         double timeToSubtract;
+        // the "jap" between two consecutive jobs
         timeToSubtract = schedule[i].getReleaseDate() - startingPoint;
         int j = i;
         while (timeToSubtract > 0 && j < schedule.length - 1) {
             if (schedule[j+1].getReleaseDate() <= startingPoint) {
 
-                // falls die Lücke größer ist als die Joblänge, die e füllen soll
+                // if "jap" if longer then the job that's places in it,
+                // the time remaining in jap will be shortened
                 if (timeToSubtract >= schedule[j+1].getRemainingPeriod()) {
                     timeToSubtract -= schedule[j+1].getRemainingPeriod();
                     schedule[j+1].setRemainingPeriod(0);
                     // falls die Lücke kleiner ist, als die Joblänge
                 } else {
+                    // the "jap" is filled
                     schedule[j+1].setRemainingPeriod(schedule[j+1].getRemainingPeriod() - timeToSubtract);
                     timeToSubtract = 0;
                 }
             }
+            // update the startingPoint after each iteration
             startingPoint += schedule[j+1].getLengthPeriod() - schedule[j+1].getRemainingPeriod();
             j++;
         }
