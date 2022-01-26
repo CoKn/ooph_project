@@ -70,10 +70,10 @@ public class Branch {
         queueNodes.remove(parentNode);
 
         findMinLateness(parentNode, queueNodes, optimalScheduleNodes);
-        // System.out.println(optimalSchedule.getData().scheduledSequence.size());
 
     }
 
+    //TODO: Check for duplicated function -> Class Schedule
     /**
      *
      * @param scheduledSequenceReference
@@ -131,7 +131,7 @@ public class Branch {
      * @param minLatenessUF
      * @return
      */
-    private static double checkUnfeasible(GenericTree.Node parentNode,
+    public static double checkUnfeasible(GenericTree.Node parentNode,
                                          GenericTree.Node childNode,
                                          LinkedList<GenericTree.Node> localOptimumsUf,
                                          LinkedList<GenericTree.Node> optimalScheduleNodes,
@@ -163,7 +163,7 @@ public class Branch {
      * @param minLatenessF
      * @return the min Lateness
      */
-    private static double checkFeasible(GenericTree.Node childNode,
+    public static double checkFeasible(GenericTree.Node childNode,
                                         LinkedList<GenericTree.Node> localOptimumsF,
                                         double minLatenessF) {
 
@@ -200,6 +200,7 @@ public class Branch {
         }
     }
 
+    //TODO. Duplicated function???
     /**
      *
      * @param nodes
