@@ -3,9 +3,14 @@ import java.util.ArrayList;
 public class GenericTree {
 
     static class Node implements Cloneable{
+
         private final Schedule data;
         ArrayList<Node> children;
 
+        /**
+         * Constructor for Node class
+         * @param data is a schedule
+         */
         Node(Schedule data){
             this.data = data;
             children = new ArrayList<>();
@@ -15,6 +20,10 @@ public class GenericTree {
             return data;
         }
 
+        /**
+         * Creates a deep Copy of a Node
+         * @return a deep Copy of a Node
+         */
         @Override
         public Node clone() {
             try {
@@ -25,16 +34,21 @@ public class GenericTree {
             }
         }
     }
+
     private final Node root;
 
+    /**
+     * Constructor for a new tree
+     * @param schedule is a given sequence of jobs which are already planed
+     */
     GenericTree(Schedule schedule){
         this.root = new Node(schedule);
     }
 
     /**
      * Adds a new node to a given parent node
-     * @param schedule
-     * @param parent
+     * @param schedule is a given sequence of jobs which are already planed
+     * @param parent is the Node above the child node
      */
     public void addNode(Schedule schedule, Node parent){
         Node node = new Node(schedule);
@@ -42,20 +56,11 @@ public class GenericTree {
     }
 
     /**
-     * Iterates over a tree
-     * @param root
-     * @return
+     * Gets the ith child of a parent node
+     * @param parent is the parent node
+     * @param i denotes the ith child of a parent node
+     * @return the ith child
      */
-    public Node iterTree(Node root){
-        Node node = root;
-        for(int i=0; i<root.children.size(); i++){
-            node = nextNode(root, i);
-            iterTree(node);
-            // node.getData().displayJobs();
-        }
-        return node;
-    }
-
     public Node nextNode(Node parent, int i){
         return parent.children.get(i);
     }
@@ -68,6 +73,10 @@ public class GenericTree {
         display(this.getRoot());
     }
 
+    /**
+     * Prints and calls the nodes of a tree recursively
+     * @param node ist the parent node
+     */
     private void display(GenericTree.Node node){
 
         int unscheduled = node.data.allJobs.length - node.data.scheduledSequence.size();
@@ -86,7 +95,7 @@ public class GenericTree {
 
     /**
      * Get the root of a tree
-     * @return
+     * @return object is the root node
      */
     public Node getRoot() {
         return root;
