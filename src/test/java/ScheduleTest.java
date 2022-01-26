@@ -142,7 +142,17 @@ public class ScheduleTest {
     }
 
     @Test
-    public void testPreemption() {
+    public void testPreemptionOneScheduled() {
+        scheduledSequence.clear();
+        scheduledSequence.add(B);
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        Assert.assertEquals(8.0, schedule.preemption(6, 1),0);
+    }
 
+    @Test
+    public void testPreemptionZeroScheduled() {
+        scheduledSequence.clear();
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        Assert.assertEquals(8.0, schedule.preemption(0, 0),0);
     }
 }
