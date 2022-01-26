@@ -1,11 +1,12 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class GenericTree {
 
     static class Node implements Cloneable{
 
         private final Schedule data;
-        ArrayList<Node> children;
+        LinkedList<Node> children;
 
         /**
          * Constructor for Node class
@@ -13,7 +14,7 @@ public class GenericTree {
          */
         Node(Schedule data){
             this.data = data;
-            children = new ArrayList<>();
+            children = new LinkedList<>();
         }
 
         public Schedule getData() {
