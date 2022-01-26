@@ -115,37 +115,6 @@ public class Schedule {
         else return Arrays.toString(schedule) + " " + this.objFunctionValue + " unfeasible"; //  + " unfeasible"
     }
 
-/*
-    public double calculateMaxLatenessScheduled() {
-
-        double timeToSubtract;
-        feasibleSolution = true;
-        double[] toReturn = new double[2];
-        double startingPoint = 0;
-        double maxLateness = scheduledSequence.get(0).calculateLateness(startingPoint);
-        for (Job job : scheduledSequence) {
-            //set new value for maxLateness, if it exceeds the old value
-            if (job.calculateLateness(startingPoint) > maxLateness) {
-                maxLateness = job.calculateLateness(startingPoint);
-            }
-            //checks if the job can start directly after to previous job has ended
-            if (job.checkReleaseDate(startingPoint)) {
-                startingPoint += job.getRemainingPeriod();
-            }
-            // otherwise, the difference between releaseDate and startingPoint plus the job's
-            // length in periods is added
-            else {
-                if (job.calculateLateness(job.getReleaseDate()) > maxLateness) {
-                    maxLateness = job.calculateLateness(job.getReleaseDate());
-                }
-            }
-        }
-        return maxLateness;
-    }
-
- */
-
-
     /**
      * Calculates the objective function value of the whole schedule
      * (scheduledSequence & unscheduled)

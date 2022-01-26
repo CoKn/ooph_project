@@ -15,12 +15,100 @@ public class ScheduleTest {
     Job[] allJobs = new Job[]{A, B, C, D};
     LinkedList<Job> scheduledSequence = new LinkedList<>();
 
+
+    @Test
+    public void testCreateUnscheduledSequenceAllJobs() {
+        scheduledSequence.clear();
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        LinkedList<Job> unscheduledSequence = new LinkedList<>();
+        unscheduledSequence.add(A);
+        unscheduledSequence.add(B);
+        unscheduledSequence.add(C);
+        unscheduledSequence.add(D);
+        Assert.assertEquals(unscheduledSequence, schedule.createUnscheduledSequence(scheduledSequence));
+    }
+
+    @Test
+    public void testCreateUnscheduledSequenceOneJobs() {
+        scheduledSequence.clear();
+        scheduledSequence.add(B);
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        LinkedList<Job> unscheduledSequence = new LinkedList<>();
+        unscheduledSequence.add(A);
+        unscheduledSequence.add(C);
+        unscheduledSequence.add(D);
+        Assert.assertEquals(unscheduledSequence, schedule.createUnscheduledSequence(scheduledSequence));
+    }
+
+    @Test
+    public void testCreateUnscheduledSequenceNoJobs() {
+        scheduledSequence.clear();
+        scheduledSequence.add(A);
+        scheduledSequence.add(B);
+        scheduledSequence.add(C);
+        scheduledSequence.add(D);
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        LinkedList<Job> unscheduledSequence = new LinkedList<>();
+        Assert.assertEquals(unscheduledSequence, schedule.createUnscheduledSequence(scheduledSequence));
+    }
+
+    @Test
+    public void testCheckSequenceJobInScheduled() {
+        scheduledSequence.clear();
+        scheduledSequence.add(A);
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        Assert.assertFalse(schedule.checkSequence(A, scheduledSequence));
+    }
+
+    @Test
+    public void testCheckSequenceJobNotInScheduled() {
+        scheduledSequence.clear();
+        scheduledSequence.add(B);
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        Assert.assertTrue(schedule.checkSequence(A, scheduledSequence));
+    }
+
+
+    @Test
+    public void testCreateScheduleNoScheduled() {
+        scheduledSequence.clear();
+        Job[] scheduledJobs = new Job[]{D, A, C, B};
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        Assert.assertEquals(scheduledJobs, schedule.createSchedule(scheduledSequence));
+    }
+
+    @Test
+    public void testCreateScheduleOneScheduled() {
+        scheduledSequence.clear();
+        scheduledSequence.add(A);
+        Job[] scheduledJobs = new Job[]{A, D, C, B};
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        Assert.assertEquals(scheduledJobs, schedule.createSchedule(scheduledSequence));
+    }
+
+    @Test
+    public void testCreateScheduleTwoScheduled() {
+        scheduledSequence.clear();
+        scheduledSequence.add(A);
+        scheduledSequence.add(B);
+        Job[] scheduledJobs = new Job[]{A, B, D, C};
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        Assert.assertEquals(scheduledJobs, schedule.createSchedule(scheduledSequence));
+    }
+
+    @Test
+    public void testCalculateMaxLatenessScheduledNoJobs() {
+        scheduledSequence.clear();
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        Assert.assertEquals(5.0, schedule.calculateObjFunctionValue(), 0.0);
+    }
+
     @Test
     public void testCalculateMaxLatenessScheduledOneJob() {
         scheduledSequence.clear();
         scheduledSequence.add(A);
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
-        Assert.assertEquals(-8.0, schedule.calculateObjFunctionValue(), 0.0);
+        Assert.assertEquals(5.0, schedule.calculateObjFunctionValue(), 0.0);
     }
 
     @Test
@@ -29,7 +117,7 @@ public class ScheduleTest {
         scheduledSequence.add(A);
         scheduledSequence.add(B);
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
-        Assert.assertEquals(-8.0, schedule.calculateObjFunctionValue(), 0.0);
+        Assert.assertEquals(7, schedule.calculateObjFunctionValue(), 0.0);
     }
 
     @Test
@@ -39,7 +127,7 @@ public class ScheduleTest {
         scheduledSequence.add(B);
         scheduledSequence.add(C);
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
-        Assert.assertEquals(-2, schedule.calculateObjFunctionValue(), 0.0);
+        Assert.assertEquals(9.0, schedule.calculateObjFunctionValue(), 0.0);
     }
 
     @Test
@@ -51,30 +139,5 @@ public class ScheduleTest {
         scheduledSequence.add(D);
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
         Assert.assertEquals(9.0, schedule.calculateObjFunctionValue(), 0.0);
-    }
-
-
-    @Test
-    public void testUnscheduledScheduled(){
-        LinkedList<Job> unScheduledSequence = new LinkedList<>();
-        unScheduledSequence.add(A);
-        unScheduledSequence.add(B);
-//        unScheduledSequence.add(C);
-//        unScheduledSequence.add(B);
-
-        Schedule schedule = new Schedule(unScheduledSequence, allJobs);
-        Assert.assertEquals(7.0, schedule.calculateObjFunctionValue(), 0.0);
-    }
-
-    @Test
-    public void testUnscheduledScheduledADCB(){
-        LinkedList<Job> unScheduledSequence = new LinkedList<>();
-//        unScheduledSequence.add(A);
-//        unScheduledSequence.add(D);
-//        unScheduledSequence.add(C);
-//        unScheduledSequence.add(B);
-
-        Schedule schedule = new Schedule(unScheduledSequence, allJobs);
-        Assert.assertEquals(5.0, schedule.calculateObjFunctionValue(), 0.0);
     }
 }

@@ -19,9 +19,9 @@ public class Job implements Sortable, Cloneable {
         this.remainingPeriod = length;
     }
 
-//    public double getDueDate() {
-//        return dueDate;
-//    }
+    public double getDueDate() {
+        return dueDate;
+    }
 
     public double getLengthPeriod() {
         return lengthPeriod;
@@ -34,10 +34,6 @@ public class Job implements Sortable, Cloneable {
     public String getName() {
         return name;
     }
-
-//    public void setLengthPeriod(double lengthPeriod) {
-//        this.lengthPeriod = lengthPeriod;
-//    }
 
     public void setRemainingPeriod(double remainingPeriod) {
         this.remainingPeriod = remainingPeriod;
@@ -78,9 +74,8 @@ public class Job implements Sortable, Cloneable {
     @Override
     public Job clone() {
         try {
-            Job clone = (Job) super.clone();
             // TODO: copy mutable state here, so the clone can't change the internals of the original
-            return clone;
+            return (Job) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
