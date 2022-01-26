@@ -104,23 +104,6 @@ public class ScheduleTest {
     }
 
     @Test
-    public void testCalculateMaxLatenessScheduledOneJob() {
-        scheduledSequence.clear();
-        scheduledSequence.add(A);
-        Schedule schedule = new Schedule(scheduledSequence, allJobs);
-        Assert.assertEquals(5.0, schedule.calculateObjFunctionValue(), 0.0);
-    }
-
-    @Test
-    public void testCalculateMaxLatenessScheduledTwoJobs() {
-        scheduledSequence.clear();
-        scheduledSequence.add(A);
-        scheduledSequence.add(B);
-        Schedule schedule = new Schedule(scheduledSequence, allJobs);
-        Assert.assertEquals(7, schedule.calculateObjFunctionValue(), 0.0);
-    }
-
-    @Test
     public void testCalculateMaxLatenessScheduledThreeJobs() {
         scheduledSequence.clear();
         scheduledSequence.add(A);
@@ -142,6 +125,23 @@ public class ScheduleTest {
     }
 
     @Test
+    public void testCalculateMaxLatenessScheduledOneJob() {
+        scheduledSequence.clear();
+        scheduledSequence.add(A);
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        Assert.assertEquals(5.0, schedule.calculateObjFunctionValue(), 0.0);
+    }
+
+    @Test
+    public void testCalculateMaxLatenessScheduledTwoJobs() {
+        scheduledSequence.clear();
+        scheduledSequence.add(A);
+        scheduledSequence.add(B);
+        Schedule schedule = new Schedule(scheduledSequence, allJobs);
+        Assert.assertEquals(7, schedule.calculateObjFunctionValue(), 0.0);
+    }
+
+    @Test
     public void testPreemptionOneScheduled() {
         scheduledSequence.clear();
         scheduledSequence.add(B);
@@ -155,4 +155,5 @@ public class ScheduleTest {
         Schedule schedule = new Schedule(scheduledSequence, allJobs);
         Assert.assertEquals(8.0, schedule.preemption(0, 0),0);
     }
+
 }

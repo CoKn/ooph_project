@@ -1,15 +1,11 @@
-/**
- * Class representing the schedule of a B&B Subproblem
- * when the fixed sequence and all jobs available are provided,
- * this class schedules the unfixed sequence based on earliest release date
- * checks if a schedule is feasible
- * calculates the maximum lateness
- */
+
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Objects;
-
+/**
+ * Class representing the schedule of a B&B Subproblem
+ */
 public class Schedule {
     LinkedList<Job> scheduledSequence;
     double objFunctionValue;

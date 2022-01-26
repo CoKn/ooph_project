@@ -1,6 +1,8 @@
 import java.util.*;
 
-
+/**
+ * Class to perform Branching Logic
+ */
 public class Branch {
 
     /**
@@ -37,7 +39,10 @@ public class Branch {
 
     /**
      * Branch a Node
-     * @param tree
+     * @param tree to which the nodes belong which should be branched
+     * @param parentNode where the branching starts
+     * @param queueNodes the nodes which will be branched on the future
+     * @param optimalScheduleNodes are all feasible nodes with an optimal objective function value
      */
     public static void branch(GenericTree tree,
                               GenericTree.Node parentNode,
@@ -59,7 +64,7 @@ public class Branch {
                 }
 
             }
-            // System.out.println(Schedule.displayJobSequence(deepCopyListArray(scheduledSequence)));
+
             Schedule schedule = new Schedule(deepCopyLinkedList(scheduledSequence), parentNode.getData().allJobs);
 
             tree.addNode(schedule, parentNode);
@@ -73,11 +78,10 @@ public class Branch {
 
     }
 
-    //TODO: Check for duplicated function -> Class Schedule
     /**
-     *
-     * @param scheduledSequenceReference
-     * @param job
+     * Checks if a job is already in a sequence
+     * @param scheduledSequenceReference the sequence to be compared to
+     * @param job the jobs that have to be compared
      * @return
      */
     public static Boolean checkForEqual(LinkedList<Job> scheduledSequenceReference, Job job){
@@ -91,9 +95,8 @@ public class Branch {
 
 
     /**
-     * Find the Schedule with the min Lateness on a horizontal level
-     * @param parentNode
-     * @return
+     * Finds the Schedule with the min Lateness on a horizontal level
+     * @param parentNode the subproblems' parent node
      */
     private static void findMinLateness(GenericTree.Node parentNode,
                                         LinkedList<GenericTree.Node> queueNodes,
@@ -124,12 +127,12 @@ public class Branch {
     /**
      * Checks an Unfeasible solution for the min Lateness and adds the min Latenss node to the queue Nodes for next
      * Branching
-     * @param parentNode
-     * @param childNode
-     * @param localOptimumsUf
-     * @param optimalScheduleNodes
-     * @param minLatenessUF
-     * @return
+     * @param parentNode the subproblem's parent node
+     * @param childNode unfeasible childnodes
+     * @param localOptimumsUf list of all unfeasible local optimums
+     * @param optimalScheduleNodes clears this list, if a higher obj function value is found
+     * @param minLatenessUF the minimal value of an infeasible problem
+     * @return minLatenessUF where to branch next
      */
     public static double checkUnfeasible(GenericTree.Node parentNode,
                                          GenericTree.Node childNode,
@@ -182,9 +185,9 @@ public class Branch {
     }
 
     /**
-     * Creates a deep copy of a ArrayList<Job>
+     * Creates a deep copy of a LinkedList<Job>
      * @param jobs
-     * @return
+     * @return sequence deep copy of jobs linkedList
      */
     private static LinkedList<Job> deepCopyLinkedList(LinkedList<Job> jobs){
         LinkedList<Job> sequence = new LinkedList<>();
@@ -194,17 +197,12 @@ public class Branch {
         return sequence;
     }
 
-    private static void printNode(ArrayList<GenericTree.Node> nodes){
-        for(GenericTree.Node queueNode: nodes){
-            System.out.println("\n" + queueNode.getData().displayJobsArray());
-        }
-    }
 
-    //TODO. Duplicated function???
+
     /**
-     *
+     * Creates a deep copy of a LinkedList<Nodes>
      * @param nodes
-     * @return
+     * @return newNodes deep copy of nodes linkedList
      */
     private static LinkedList<GenericTree.Node> deepCopyListArrayNodes(LinkedList<GenericTree.Node> nodes){
         LinkedList<GenericTree.Node> newNodes = new LinkedList<>();

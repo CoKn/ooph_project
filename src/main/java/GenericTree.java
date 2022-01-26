@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * Builds a tree representing the B&B algorithm
+ */
 public class GenericTree {
 
     static class Node implements Cloneable{
@@ -28,7 +31,6 @@ public class GenericTree {
         @Override
         public Node clone() {
             try {
-                // TODO: copy mutable state here, so the clone can't change the internals of the original
                 return (Node) super.clone();
             } catch (CloneNotSupportedException e) {
                 throw new AssertionError();
@@ -56,15 +58,6 @@ public class GenericTree {
         parent.children.add(node);
     }
 
-    /**
-     * Gets the ith child of a parent node
-     * @param parent is the parent node
-     * @param i denotes the ith child of a parent node
-     * @return the ith child
-     */
-    public Node nextNode(Node parent, int i){
-        return parent.children.get(i);
-    }
 
 
     /**

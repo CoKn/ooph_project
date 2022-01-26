@@ -1,5 +1,8 @@
 // package scr;
 
+/**
+ * Selection Sort Algorithm
+ */
 public class SortingAlgorithm {
 
     /**
